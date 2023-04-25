@@ -56,12 +56,12 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded && Input.GetButton("Jump"))
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up.normalized * jumpForce, ForceMode2D.Impulse);
         }
 
         if (!isGrounded && Input.GetButtonUp("Jump") && rb.velocity.y > 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * variableJumpHeightMultiplier);
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * variableJumpHeightMultiplier).normalized;
         }
     }
 
