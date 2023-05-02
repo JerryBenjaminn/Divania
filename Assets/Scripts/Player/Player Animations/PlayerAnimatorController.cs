@@ -50,4 +50,17 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         animator.SetBool("isAttacking", isAttacking);
     }
+
+    public void SetTakeDamageAnimation()
+    {
+        //Take damage anim.
+    }
+    public void SetHealAnimation()
+    {
+        //Heal anim
+    }
+    public void SetDeathAnimation()
+    {
+        //Death anim
+    }
 }
