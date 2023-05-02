@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
     private PlayerAnimatorController animatorController;
     private PlayerCombatController combatController;
 
+
+    public bool IsGrounded
+    {
+        get { return isGrounded; }
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();

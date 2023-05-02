@@ -51,6 +51,11 @@ public class PlayerAnimatorController : MonoBehaviour
         animator.SetBool("isAttacking", isAttacking);
     }
 
+    public void SetJumpAttackAnimation(bool isJumpAttacking)
+    {
+        animator.SetBool("isJumpAttacking", isJumpAttacking);
+    }
+
     public void SetTakeDamageAnimation()
     {
         //Take damage anim.

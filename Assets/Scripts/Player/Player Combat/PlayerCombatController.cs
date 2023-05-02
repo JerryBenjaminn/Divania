@@ -9,6 +9,8 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] private float meleeAttackDuration;
     [SerializeField] private WeaponHitArea weaponHitArea;
 
+    private bool isJumpAttacking;
+
     private PlayerController playerController;
     private PlayerAnimatorController animatorController;
 
@@ -20,7 +22,14 @@ public class PlayerCombatController : MonoBehaviour
 
     public void PerformMeleeAttack()
     {
-        StartCoroutine(MeleeAttack());
+        if (playerController.IsGrounded)
+        {
+            StartCoroutine(MeleeAttack());
+        }
+        else
+        {
+            StartCoroutine(JumpAttack());
+        }
     }
 
     private IEnumerator MeleeAttack()
@@ -34,4 +43,25 @@ public class PlayerCombatController : MonoBehaviour
         animatorController.SetAttackAnimation(false);
     }
 
+    private IEnumerator JumpAttack()
+    {
+        isJumpAttacking = true;
+        animatorController.SetJumpAttackAnimation(true);
+        weaponHitArea.EnableHitDetection();
+
+        yield return new WaitForSeconds(meleeAttackDuration);
+
+        weaponHitArea.DisableHitDetection();
+        animatorController.SetJumpAttackAnimation(false);
+        //isJumpAttacking = false;
+    }
+
+    private void Update()
+    {
+        if (isJumpAttacking && playerController.IsGrounded)
+        {
+            animatorController.SetJumpAttackAnimation(false);
+            isJumpAttacking = false;
+        }
+    }
 }

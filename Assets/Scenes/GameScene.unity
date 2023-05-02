@@ -2527,7 +2527,7 @@ MonoBehaviour:
   moveSpeed: 5
   variableJumpHeightMultiplier: 0.1
   jumpForce: 10
-  jumpCooldown: 0.75
+  jumpCooldown: 0.9
   groundCheck: {fileID: 354622782}
   groundCheckRadius: 0.24
   isGrounded: 0
