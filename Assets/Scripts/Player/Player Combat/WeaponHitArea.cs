@@ -14,21 +14,23 @@ public class WeaponHitArea : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Checks all the colliders in attack is active
+        // Tarkistetaan kaikki collidereiden osumat, kun hyökkäys on aktiivinen
         if (canHit)
         {
-            foreach (Collider2D collider in collidersInHitArea)
+            for (int i = collidersInHitArea.Count - 1; i >= 0; i--)
             {
-                //Check if the collider has already been hit last attack
+                Collider2D collider = collidersInHitArea[i];
+                // Tarkistetaan, onko collider jo osunut viimeisen hyökkäyksen aikana
                 if (!recentlyHitColliders.Contains(collider))
                 {
                     HandleCollision(collider);
-                    //Keep track of recently hit colliders
+                    // Pidetään kirjaa hiljattain osuneista collidereista
                     recentlyHitColliders.Add(collider);
                 }
             }
         }
     }
+
 
     //If a collider comes in range of the attack, add it to a list to keep track if it can be attacked
     private void OnTriggerEnter2D(Collider2D collision)

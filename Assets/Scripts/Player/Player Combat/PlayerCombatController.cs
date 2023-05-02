@@ -4,22 +4,32 @@ using UnityEngine;
 
 public class PlayerCombatController : MonoBehaviour
 {
+    [Header("Player Stats")]
+    [SerializeField] private int attackPower;
+    [SerializeField] private int maxHealth;
+    [SerializeField] private int defencePower;
+
     [Header("Melee Attack Settings")]
-    [SerializeField] private int meleeDamage;
     [SerializeField] private float meleeAttackDuration;
     [SerializeField] private WeaponHitArea weaponHitArea;
-    public int MeleeDamage => meleeDamage;
+    public int MeleeDamage => attackPower;
 
     private bool isJumpAttacking;
-    private bool isAttacking;
 
     private PlayerController playerController;
     private PlayerAnimatorController animatorController;
+
+    [SerializeField] private CharacterStats playerStats;
+    [SerializeField] private HealthSystem healthSystem;
 
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
         animatorController = GetComponent<PlayerAnimatorController>();
+
+        attackPower = playerStats.attackPower;
+        defencePower = playerStats.defensePower;
+        maxHealth = playerStats.maxHealth;
     }
     private void Update()
     {
@@ -44,13 +54,13 @@ public class PlayerCombatController : MonoBehaviour
 
     private IEnumerator MeleeAttack()
     {
-        isAttacking = true;
+
         animatorController.SetAttackAnimation(true);
         weaponHitArea.EnableHitDetection();
         
         yield return new WaitForSeconds(meleeAttackDuration);
 
-        isAttacking = false;
+
         weaponHitArea.DisableHitDetection();
         animatorController.SetAttackAnimation(false);
     }
