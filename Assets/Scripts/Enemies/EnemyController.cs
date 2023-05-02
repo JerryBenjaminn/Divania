@@ -4,23 +4,15 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] private HealthSystem healthSystem;
-
-    public void TakeDamage(int damage)
+    // Start is called before the first frame update
+    void Start()
     {
-        if(healthSystem == null)
-        {
-            Debug.Log("HealthSystem is null");
-            return;
-        }
-
-        healthSystem.TakeDamage(damage);
-        Debug.Log(damage);
-
-        if (healthSystem.IsDead())
-        {
-            Destroy(gameObject);
-        }
+        
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }

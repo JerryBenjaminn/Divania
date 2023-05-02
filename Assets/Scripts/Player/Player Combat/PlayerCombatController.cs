@@ -33,6 +33,7 @@ public class PlayerCombatController : MonoBehaviour
     }
     private void Update()
     {
+        //Reset jump attack if player is grounded
         if (isJumpAttacking && playerController.IsGrounded)
         {
             animatorController.SetJumpAttackAnimation(false);
@@ -41,7 +42,7 @@ public class PlayerCombatController : MonoBehaviour
     }
     public void PerformMeleeAttack()
     {
-
+        //Attack depending if player is in the air or not
         if (playerController.IsGrounded)
         {
             StartCoroutine(MeleeAttack());
@@ -54,27 +55,43 @@ public class PlayerCombatController : MonoBehaviour
 
     private IEnumerator MeleeAttack()
     {
-
+        //Start the attack animation
         animatorController.SetAttackAnimation(true);
+
+        //Enable hit detection
         weaponHitArea.EnableHitDetection();
         
+        //Wait for the duration of the attack
         yield return new WaitForSeconds(meleeAttackDuration);
 
-
+        //Disable hit detection
         weaponHitArea.DisableHitDetection();
+
+        //Stop the attack animation
         animatorController.SetAttackAnimation(false);
     }
 
     private IEnumerator JumpAttack()
     {
+        //Start the jump attack
         isJumpAttacking = true;
+
+        //Start the jump attack animation
         animatorController.SetJumpAttackAnimation(true);
+
+        //Enable hit detection
         weaponHitArea.EnableHitDetection();
 
+        //Wait for the duration of the attack
         yield return new WaitForSeconds(meleeAttackDuration);
 
+        //Stop the jump attack
         isJumpAttacking = false;
+
+        //Disable hit detection
         weaponHitArea.DisableHitDetection();
+
+        //Stop the jump attack animation
         animatorController.SetJumpAttackAnimation(false);
     }
 }

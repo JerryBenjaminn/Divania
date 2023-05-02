@@ -14,23 +14,24 @@ public class WeaponHitArea : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Tarkistetaan kaikki collidereiden osumat, kun hyökkäys on aktiivinen
+        // Check all the hits with colliders while attacking
         if (canHit)
         {
             for (int i = collidersInHitArea.Count - 1; i >= 0; i--)
             {
                 Collider2D collider = collidersInHitArea[i];
-                // Tarkistetaan, onko collider jo osunut viimeisen hyökkäyksen aikana
+
+                // Check if the collider has already been hit
                 if (!recentlyHitColliders.Contains(collider))
                 {
                     HandleCollision(collider);
-                    // Pidetään kirjaa hiljattain osuneista collidereista
+
+                    // Keep track of the recently hit colliders
                     recentlyHitColliders.Add(collider);
                 }
             }
         }
     }
-
 
     //If a collider comes in range of the attack, add it to a list to keep track if it can be attacked
     private void OnTriggerEnter2D(Collider2D collision)
@@ -51,8 +52,10 @@ public class WeaponHitArea : MonoBehaviour
         if ((enemyLayers.value & (1 << collision.gameObject.layer)) != 0)
         {
             Debug.Log("Enemy hit");
-            // Vahingon aiheutus siirretään tänne
-            EnemyController enemy = collision.GetComponent<EnemyController>();
+
+            CharacterHealthSystem enemy = collision.GetComponent<CharacterHealthSystem>();
+
+            //Handle the damage
             if (enemy != null)
             {
                 enemy.TakeDamage(playerCombatController.MeleeDamage);
