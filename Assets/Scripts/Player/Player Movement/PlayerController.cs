@@ -6,9 +6,13 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpForce;
     [SerializeField] private float variableJumpHeightMultiplier;
 
+    [Header("Jump Settings")]
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpCooldown = 0.2f;
+
+    private float jumpTimer;
     private bool jumpRequest;
     private bool wasGrounded;
 
@@ -35,6 +39,7 @@ public class PlayerController : MonoBehaviour
         combatController = GetComponent<PlayerCombatController>();
 
         coyoteTime = coyoteTimeDuration;
+        jumpTimer = jumpCooldown;
     }
 
     private void Update()
@@ -50,9 +55,15 @@ public class PlayerController : MonoBehaviour
             coyoteTime -= Time.deltaTime;
         }
 
-        if (Input.GetButtonDown("Jump"))
+        if(jumpTimer < jumpCooldown)
+        {
+            jumpTimer += Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Jump") && jumpTimer >= jumpCooldown)
         {
             jumpRequest = true;
+            jumpTimer = 0;
         }
 
         wasGrounded = isGrounded;
@@ -94,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
         if (!isGrounded && Input.GetButtonUp("Jump") && rb.velocity.y > 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * variableJumpHeightMultiplier).normalized;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * variableJumpHeightMultiplier);
         }
     }
 
