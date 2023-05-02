@@ -49,8 +49,12 @@ public class WeaponHitArea : MonoBehaviour
         if ((enemyLayers.value & (1 << collision.gameObject.layer)) != 0)
         {
             Debug.Log("Enemy hit");
-            // Apply damage to the enemy
-            // Call TakeDamage-method here
+            // Vahingon aiheutus siirretään tänne
+            EnemyController enemy = collision.GetComponent<EnemyController>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(playerCombatController.MeleeDamage);
+            }
         }
     }
 

@@ -8,8 +8,10 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] private int meleeDamage;
     [SerializeField] private float meleeAttackDuration;
     [SerializeField] private WeaponHitArea weaponHitArea;
+    public int MeleeDamage => meleeDamage;
 
     private bool isJumpAttacking;
+    private bool isAttacking;
 
     private PlayerController playerController;
     private PlayerAnimatorController animatorController;
@@ -19,9 +21,17 @@ public class PlayerCombatController : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         animatorController = GetComponent<PlayerAnimatorController>();
     }
-
+    private void Update()
+    {
+        if (isJumpAttacking && playerController.IsGrounded)
+        {
+            animatorController.SetJumpAttackAnimation(false);
+            isJumpAttacking = false;
+        }
+    }
     public void PerformMeleeAttack()
     {
+
         if (playerController.IsGrounded)
         {
             StartCoroutine(MeleeAttack());
@@ -34,11 +44,13 @@ public class PlayerCombatController : MonoBehaviour
 
     private IEnumerator MeleeAttack()
     {
+        isAttacking = true;
         animatorController.SetAttackAnimation(true);
         weaponHitArea.EnableHitDetection();
-
+        
         yield return new WaitForSeconds(meleeAttackDuration);
 
+        isAttacking = false;
         weaponHitArea.DisableHitDetection();
         animatorController.SetAttackAnimation(false);
     }
@@ -51,17 +63,8 @@ public class PlayerCombatController : MonoBehaviour
 
         yield return new WaitForSeconds(meleeAttackDuration);
 
+        isJumpAttacking = false;
         weaponHitArea.DisableHitDetection();
         animatorController.SetJumpAttackAnimation(false);
-        //isJumpAttacking = false;
-    }
-
-    private void Update()
-    {
-        if (isJumpAttacking && playerController.IsGrounded)
-        {
-            animatorController.SetJumpAttackAnimation(false);
-            isJumpAttacking = false;
-        }
     }
 }

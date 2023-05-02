@@ -37,5 +37,10 @@ public class HealthSystem : MonoBehaviour
 
         OnHeal.Invoke();
     }
+
+    public bool IsDead()
+    {
+        return currentHealth <= 0;
+    }
 }
 
