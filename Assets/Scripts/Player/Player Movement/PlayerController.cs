@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float variableJumpHeightMultiplier;
 
+    private bool jumpRequest;
+    private bool wasGrounded;
+
     [Header("Ground Check Settings")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius;
@@ -30,13 +33,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animatorController = GetComponent<PlayerAnimatorController>();
         combatController = GetComponent<PlayerCombatController>();
+
+        coyoteTime = coyoteTimeDuration;
     }
 
-    private void FixedUpdate()
-    {
-        Move();
-        Jump();
-    }
     private void Update()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
@@ -45,12 +45,19 @@ public class PlayerController : MonoBehaviour
         {
             coyoteTime = coyoteTimeDuration;
         }
-        else
+        else if (wasGrounded)
         {
-            coyoteTimeDuration -= Time.deltaTime;
+            coyoteTime -= Time.deltaTime;
         }
 
-        GetInput();       
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpRequest = true;
+        }
+
+        wasGrounded = isGrounded;
+
+        GetInput();
         FlipPlayer(moveInput);
         
         animatorController.SetMoveAnimation(moveInput);
@@ -61,6 +68,11 @@ public class PlayerController : MonoBehaviour
         {
             combatController.PerformMeleeAttack();
         }
+    }
+    private void FixedUpdate()
+    {
+        Move();
+        Jump();
     }
 
     private void GetInput()
@@ -74,16 +86,10 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if(coyoteTime > 0 && Input.GetButtonDown("Jump"))
-        {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            coyoteTime = 0;
-            Debug.Log(coyoteTime);
-        }
-
-        if (isGrounded && Input.GetButton("Jump"))
+        if (jumpRequest && coyoteTime > 0)
         {
             rb.AddForce(Vector2.up.normalized * jumpForce, ForceMode2D.Impulse);
+            jumpRequest = false;
         }
 
         if (!isGrounded && Input.GetButtonUp("Jump") && rb.velocity.y > 0)
