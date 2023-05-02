@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   maxHealth: 100
-  attackPower: 5
+  attackPower: 10
   defensePower: 0
