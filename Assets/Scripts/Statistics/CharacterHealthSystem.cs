@@ -10,7 +10,7 @@ public class CharacterHealthSystem : MonoBehaviour
     //Reference to the animator
     [SerializeField] private Animator animator;
     //Reference to the rigidbody2d
-    private Rigidbody2D rigidbody2D;
+    private Rigidbody2D rb2D;
     //Reference to the enemy
     private EnemyController enemy;
 
@@ -18,17 +18,17 @@ public class CharacterHealthSystem : MonoBehaviour
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected float flashDuration = 0.1f;
     [SerializeField] protected int numberOfFlashes = 3;
-    [SerializeField] private float knockbackForce = 1;
+    [SerializeField] protected float knockbackForce = 1;
 
     public bool isDying = false;
 
     private void Start()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
+        rb2D = GetComponent<Rigidbody2D>();
         enemy = GetComponent<EnemyController>();
         Debug.Log(enemy);
     }
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, Transform damageDealer)
     {
         //Check that the health system is active, otherwise message an error and return
         if(healthSystem == null)
@@ -47,8 +47,8 @@ public class CharacterHealthSystem : MonoBehaviour
             StartCoroutine(FlashSprite());
             if(enemy != null)
             {
-                Vector2 knockbackDirection = (transform.position - enemy.transform.position).normalized;
-                rigidbody2D.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+                Vector2 knockbackDirection = (transform.position - damageDealer.transform.position).normalized;
+                rb2D.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
             }
         }
 

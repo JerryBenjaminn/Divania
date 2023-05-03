@@ -85,7 +85,7 @@ public class EnemyController : MonoBehaviour
         if(playerHealth != null)
         {
             Debug.Log("Player hit");
-            playerHealth.TakeDamage(enemyStats.attackPower);
+            playerHealth.TakeDamage(enemyStats.attackPower, player);
         }
     }
 

@@ -3403,6 +3403,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5830461439599933705, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
+      propertyPath: knockbackForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830461439599933705, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
+      propertyPath: knockbackDuration
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2938758566258154897, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}

@@ -104,6 +104,8 @@ MonoBehaviour:
   numberOfFlashes: 3
   knockbackForce: 1
   isDying: 0
+  playerController: {fileID: 3503862534857633251}
+  knockbackDuration: 0.2
 --- !u!114 &1866017735707698222
 MonoBehaviour:
   m_ObjectHideFlags: 0

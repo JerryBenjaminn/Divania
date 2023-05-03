@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemyHealthSystem : CharacterHealthSystem
 {
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, Transform damageDealer)
     {
-        base.TakeDamage(damage);
+        base.TakeDamage(damage, damageDealer);
     }
 
     public override IEnumerator FlashSprite()

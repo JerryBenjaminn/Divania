@@ -53,12 +53,12 @@ public class WeaponHitArea : MonoBehaviour
         {
             Debug.Log("Enemy hit");
 
-            CharacterHealthSystem enemy = collision.GetComponent<CharacterHealthSystem>();
+            EnemyHealthSystem enemy = collision.GetComponent<EnemyHealthSystem>();
 
             //Handle the damage
             if (enemy != null)
             {
-                enemy.TakeDamage(playerCombatController.MeleeDamage);
+                enemy.TakeDamage(playerCombatController.MeleeDamage, enemy.transform);
             }
         }
     }
