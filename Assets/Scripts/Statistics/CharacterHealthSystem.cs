@@ -24,6 +24,11 @@ public class CharacterHealthSystem : MonoBehaviour
         healthSystem.TakeDamage(damage);
         Debug.Log(damage);
 
+        if (!isDying)
+        {
+            animator.SetTrigger("Hurt");
+        }
+
         //If the health reached zero, the enemy is destroyed
         if (healthSystem.IsDead())
         {
