@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5790066487286118415}
-  - component: {fileID: 5790066487286118414}
-  - component: {fileID: 5790066487286118408}
+  - component: {fileID: 2998565322818493841}
   - component: {fileID: 5790066487286118409}
   - component: {fileID: 5790066487286118411}
+  - component: {fileID: 5790066487286118414}
+  - component: {fileID: 5790066487286118408}
   - component: {fileID: 5790066487286118410}
-  - component: {fileID: 2998565322818493841}
   - component: {fileID: 481731128}
   m_Layer: 7
   m_Name: Skeleton
@@ -38,6 +38,65 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2998565322818493841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5790066487286118412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f2d3d3ef18d26408b815c96c471757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackPower: 0
+  maxHealth: 0
+  defencePower: 0
+  detectionRange: 3.04
+  moveSpeed: 1
+  player: {fileID: 0}
+  animator: {fileID: 481731128}
+  enemyStats: {fileID: 11400000, guid: fac4e969a7689fb429ef764ca839c5d6, type: 2}
+  enemyHealth: {fileID: 5790066487286118409}
+--- !u!114 &5790066487286118409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5790066487286118412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4360e8ff7bc22c94a8955c00c96c9177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSystem: {fileID: 5790066487286118411}
+  animator: {fileID: 481731128}
+  isDying: 0
+--- !u!114 &5790066487286118411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5790066487286118412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769d7bfb2636dbf4b8512e658e3a7191, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterStats: {fileID: 11400000, guid: fac4e969a7689fb429ef764ca839c5d6, type: 2}
+  currentHealth: 0
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHeal:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &5790066487286118414
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -128,41 +187,6 @@ PolygonCollider2D:
       - {x: 0.17999999, y: -0.22}
       - {x: 0.13, y: -0.17}
       - {x: 0.14999999, y: 0.04}
---- !u!114 &5790066487286118409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5790066487286118412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4360e8ff7bc22c94a8955c00c96c9177, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthSystem: {fileID: 5790066487286118411}
---- !u!114 &5790066487286118411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5790066487286118412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 769d7bfb2636dbf4b8512e658e3a7191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterStats: {fileID: 11400000, guid: fac4e969a7689fb429ef764ca839c5d6, type: 2}
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  OnHeal:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDeath:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!50 &5790066487286118410
 Rigidbody2D:
   serializedVersion: 4
@@ -184,26 +208,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &2998565322818493841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5790066487286118412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39f2d3d3ef18d26408b815c96c471757, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackPower: 0
-  maxHealth: 0
-  defencePower: 0
-  detectionRange: 3.04
-  moveSpeed: 1
-  player: {fileID: 0}
-  animator: {fileID: 481731128}
-  enemyStats: {fileID: 11400000, guid: fac4e969a7689fb429ef764ca839c5d6, type: 2}
 --- !u!95 &481731128
 Animator:
   serializedVersion: 5

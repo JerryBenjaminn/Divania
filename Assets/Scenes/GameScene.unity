@@ -2660,6 +2660,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1330593120 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 481731128, guid: 743b14113ae815a4fb0e2cc5b627d538, type: 3}
+  m_PrefabInstance: {fileID: 5790066487479999036}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1330593124 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5790066487286118409, guid: 743b14113ae815a4fb0e2cc5b627d538, type: 3}
+  m_PrefabInstance: {fileID: 5790066487479999036}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4360e8ff7bc22c94a8955c00c96c9177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1487923991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3450,6 +3466,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 672362153}
+    - target: {fileID: 2998565322818493841, guid: 743b14113ae815a4fb0e2cc5b627d538, type: 3}
+      propertyPath: enemyHealth
+      value: 
+      objectReference: {fileID: 1330593124}
+    - target: {fileID: 5790066487286118409, guid: 743b14113ae815a4fb0e2cc5b627d538, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1330593120}
     - target: {fileID: 5790066487286118412, guid: 743b14113ae815a4fb0e2cc5b627d538, type: 3}
       propertyPath: m_Name
       value: Skeleton

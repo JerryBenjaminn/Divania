@@ -20,6 +20,7 @@ public class EnemyController : MonoBehaviour
     private bool hasRisen = false; // Whether the rise animation has completed
 
     [SerializeField] private CharacterStats enemyStats;
+    [SerializeField] private CharacterHealthSystem enemyHealth;
 
 
     private void Start()
@@ -40,7 +41,7 @@ public class EnemyController : MonoBehaviour
         }
 
         // If the player has been detected and the rise animation has completed, move towards them
-        if (isPlayerDetected && hasRisen)
+        if (isPlayerDetected && hasRisen && !enemyHealth.isDying)
         {
             MoveTowardsPlayer();
         }
