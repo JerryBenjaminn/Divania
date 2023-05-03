@@ -7,7 +7,7 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private CharacterStats characterStats;
 
     //Variable to save the current health value
-    private int currentHealth;
+    [SerializeField] private int currentHealth;
 
     //Unity-events for taking damage, healing and death
     public UnityEvent OnTakeDamage;
@@ -26,7 +26,7 @@ public class HealthSystem : MonoBehaviour
         int actualDamage = Mathf.Max(damage - characterStats.defensePower, 0);
         currentHealth -= actualDamage;
         currentHealth = Mathf.Max(currentHealth, 0);
-
+        Debug.Log(currentHealth);
         //Call the method for taking the damage
         OnTakeDamage.Invoke();
 

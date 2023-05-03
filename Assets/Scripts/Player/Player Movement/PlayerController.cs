@@ -37,10 +37,24 @@ public class PlayerController : MonoBehaviour
     private PlayerAnimatorController animatorController;
     private PlayerCombatController combatController;
 
+    private PlayerController instance;
+
     //Groundcheck boolean
     public bool IsGrounded
     {
         get { return isGrounded; }
+    }
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
     private void Start()
     {
