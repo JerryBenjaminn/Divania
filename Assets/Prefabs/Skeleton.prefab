@@ -76,7 +76,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 5790066487286118414}
   flashDuration: 0.1
   numberOfFlashes: 1
-  knockbackForce: 2
+  knockbackForce: 30
   knockbackDuration: 0.2
   isDying: 0
 --- !u!114 &5790066487286118411

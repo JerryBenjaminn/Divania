@@ -2732,11 +2732,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39f2d3d3ef18d26408b815c96c471757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!212 &1330593126 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 5790066487286118414, guid: 743b14113ae815a4fb0e2cc5b627d538, type: 3}
-  m_PrefabInstance: {fileID: 5790066487479999036}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1363643105
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3429,14 +3424,6 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 672362153}
-    - target: {fileID: 5790066487286118409, guid: 743b14113ae815a4fb0e2cc5b627d538, type: 3}
-      propertyPath: knockbackForce
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5790066487286118409, guid: 743b14113ae815a4fb0e2cc5b627d538, type: 3}
-      propertyPath: spriteRenderer
-      value: 
-      objectReference: {fileID: 1330593126}
     - target: {fileID: 5790066487286118412, guid: 743b14113ae815a4fb0e2cc5b627d538, type: 3}
       propertyPath: m_Name
       value: Skeleton
