@@ -18,7 +18,8 @@ public class CharacterHealthSystem : MonoBehaviour
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected float flashDuration = 0.1f;
     [SerializeField] protected int numberOfFlashes = 3;
-    [SerializeField] protected float knockbackForce = 1;
+    [SerializeField] protected float knockbackForce = 5;
+    [SerializeField] protected float knockbackDuration = 0.5f;
 
     public bool isDying = false;
 
@@ -28,7 +29,7 @@ public class CharacterHealthSystem : MonoBehaviour
         enemy = GetComponent<EnemyController>();
         Debug.Log(enemy);
     }
-    public virtual void TakeDamage(int damage, Transform damageDealer)
+    public virtual void TakeDamage(int damage, Vector2 damageDealer)
     {
         //Check that the health system is active, otherwise message an error and return
         if(healthSystem == null)
@@ -36,7 +37,8 @@ public class CharacterHealthSystem : MonoBehaviour
             Debug.Log("HealthSystem is null");
             return;
         }
-
+        Debug.Log("Player position: " + transform.position);
+        Debug.Log("Damage dealer position: " + damageDealer);
         //Substract the damage from the hp
         healthSystem.TakeDamage(damage);
         Debug.Log(damage);
@@ -45,11 +47,6 @@ public class CharacterHealthSystem : MonoBehaviour
         {
             animator.SetTrigger("Hurt");
             StartCoroutine(FlashSprite());
-            if(enemy != null)
-            {
-                Vector2 knockbackDirection = (transform.position - damageDealer.transform.position).normalized;
-                rb2D.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-            }
         }
 
         //If the health reached zero, the enemy is destroyed

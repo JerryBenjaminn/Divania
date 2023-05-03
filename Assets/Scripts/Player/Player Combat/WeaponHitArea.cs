@@ -58,7 +58,8 @@ public class WeaponHitArea : MonoBehaviour
             //Handle the damage
             if (enemy != null)
             {
-                enemy.TakeDamage(playerCombatController.MeleeDamage, enemy.transform);
+                Vector2 damageDealer = GetComponent<Collider2D>().bounds.center;
+                enemy.TakeDamage(playerCombatController.MeleeDamage, damageDealer);
             }
         }
     }

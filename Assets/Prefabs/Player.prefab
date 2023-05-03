@@ -101,11 +101,11 @@ MonoBehaviour:
   animator: {fileID: 3503862534857633250}
   spriteRenderer: {fileID: 3503862534857633249}
   flashDuration: 0.1
-  numberOfFlashes: 3
-  knockbackForce: 1
+  numberOfFlashes: 5
+  knockbackForce: 5
+  knockbackDuration: 0.5
   isDying: 0
   playerController: {fileID: 3503862534857633251}
-  knockbackDuration: 0.2
 --- !u!114 &1866017735707698222
 MonoBehaviour:
   m_ObjectHideFlags: 0

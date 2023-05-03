@@ -7,17 +7,14 @@ public class PlayerHealthSystem : CharacterHealthSystem
     //Reference to the Player Controller
     [SerializeField] private PlayerController playerController;
 
-    [Header("Knockback settings")]
-    [SerializeField] private float knockbackDuration = 0.2f;
-
-    public override void TakeDamage(int damage, Transform damageDealer)
+    public override void TakeDamage(int damage, Vector2 damageDealer)
     {
         base.TakeDamage(damage, damageDealer);
 
         if (!isDying)
         {
             //Calculate the knockback direction
-            Vector2 knockbackDirection = (transform.position - damageDealer.position).normalized;
+            Vector2 knockbackDirection = (transform.position - (Vector3)damageDealer).normalized;
             StartCoroutine(ApplyKnockback(knockbackDirection, knockbackForce, knockbackDuration));
         }
     }
@@ -26,6 +23,7 @@ public class PlayerHealthSystem : CharacterHealthSystem
     {
         // Temporarily disable player control
         playerController.enabled = false;
+        //Debug.Log("Taking damage. Knockback direction: " + direction + ", force: " + force);
 
         // Apply the knockback force
         GetComponent<Rigidbody2D>().AddForce(direction * force, ForceMode2D.Impulse);
