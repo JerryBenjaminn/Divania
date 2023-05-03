@@ -20,7 +20,7 @@ public class EnemyController : MonoBehaviour
     private bool hasRisen = false; // Whether the rise animation has completed
 
     [SerializeField] private CharacterStats enemyStats;
-    [SerializeField] private CharacterHealthSystem enemyHealth;
+    [SerializeField] private EnemyHealthSystem enemyHealth;
 
 
     private void Start()
