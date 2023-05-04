@@ -14,6 +14,10 @@ public class PlayerAnimatorController : MonoBehaviour
             animator = GetComponent<Animator>();
         }
     }
+    public Animator GetAnimator()
+    {
+        return animator;
+    }
 
     public void SetMoveAnimation(float speed)
     {

@@ -53,6 +53,12 @@ public class PlayerCombatController : MonoBehaviour
 
         lastAttackTime = Time.time;
 
+        // Check if the player is in the falling state
+        if (animatorController.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("Player_Jump_Fall"))
+        {
+            StartCoroutine(JumpAttack());
+            return;
+        }
         //Attack depending if player is in the air or not
         if (playerController.IsGrounded)
         {
@@ -96,6 +102,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private IEnumerator JumpAttack()
     {
+        playerController.enabled = false;
         //Start the jump attack
         isJumpAttacking = true;
 
@@ -116,6 +123,8 @@ public class PlayerCombatController : MonoBehaviour
 
         //Stop the jump attack animation
         animatorController.SetJumpAttackAnimation(false);
+
+        playerController.enabled = true;
     }
     public bool CanAttack()
     {
