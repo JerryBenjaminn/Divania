@@ -69,6 +69,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        canMove = !combatController.IsAttacking;
+
         if (canMove)
         {
             //Assigning the check to the variable

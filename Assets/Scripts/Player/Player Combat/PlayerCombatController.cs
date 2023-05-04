@@ -17,6 +17,7 @@ public class PlayerCombatController : MonoBehaviour
     private float lastAttackTime; //Time since last attack
     public int MeleeDamage => attackPower;
 
+    public bool IsAttacking { get; private set; }
     private bool isJumpAttacking;
 
     private PlayerController playerController;
@@ -66,6 +67,8 @@ public class PlayerCombatController : MonoBehaviour
 
     private IEnumerator MeleeAttack()
     {
+        playerController.enabled = false;
+        IsAttacking = true;
         //Start the attack animation
         animatorController.SetAttackAnimation(true);
 
@@ -86,6 +89,9 @@ public class PlayerCombatController : MonoBehaviour
 
         //Stop the attack animation
         animatorController.SetAttackAnimation(false);
+
+        IsAttacking = false;
+        playerController.enabled = true;
     }
 
     private IEnumerator JumpAttack()
