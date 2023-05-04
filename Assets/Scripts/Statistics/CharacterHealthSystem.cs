@@ -58,6 +58,7 @@ public class CharacterHealthSystem : MonoBehaviour
     }
     IEnumerator Die()
     {
+        DisableColliderAndRigidbody();
         isDying = true;
         // Play the die animation
         animator.SetTrigger("Die");
@@ -78,6 +79,19 @@ public class CharacterHealthSystem : MonoBehaviour
             yield return new WaitForSeconds(flashDuration);
         }
         spriteRenderer.material.color = Color.white; // reset color to normal
+    }
+    private void DisableColliderAndRigidbody()
+    {
+        Collider2D collider = GetComponent<Collider2D>();
+        
+        if (collider != null)
+        {
+            collider.enabled = false;            
+        }
+        if(rb2D != null)
+        {
+            rb2D.simulated = false;
+        }
     }
 
 }

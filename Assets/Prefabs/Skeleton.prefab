@@ -54,7 +54,7 @@ MonoBehaviour:
   maxHealth: 0
   defencePower: 0
   detectionRange: 3
-  moveSpeed: 1
+  moveSpeed: 2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -81,8 +81,9 @@ MonoBehaviour:
   spriteRenderer: {fileID: 5790066487286118414}
   flashDuration: 0.1
   numberOfFlashes: 1
-  knockbackForce: 100
+  knockbackForce: 150
   knockbackDuration: 0.2
+  knockbackAngle: 45
   isDying: 0
 --- !u!114 &5790066487286118411
 MonoBehaviour:
