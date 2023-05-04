@@ -81,7 +81,7 @@ public class EnemyController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Check if the object we collided is the player
-        CharacterHealthSystem playerHealth = collision.gameObject.GetComponent<CharacterHealthSystem>();
+        PlayerHealthSystem playerHealth = collision.gameObject.GetComponent<PlayerHealthSystem>();
         if (playerHealth != null)
         {
             Debug.Log("Player hit");
@@ -91,6 +91,9 @@ public class EnemyController : MonoBehaviour
 
             // Pass the contact point instead of the enemy's transform
             playerHealth.TakeDamage(enemyStats.attackPower, contactPoint);
+        }else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            return;
         }
     }
 
