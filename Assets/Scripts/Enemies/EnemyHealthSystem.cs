@@ -7,14 +7,19 @@ public class EnemyHealthSystem : CharacterHealthSystem
 
     public override void TakeDamage(int damage, Vector2 damageDealer)
     {
-        base.TakeDamage(damage, damageDealer);
-
-        if (!isDying)
+        if (!isInvulnerable)
         {
-            //Calculate the knockback direction
-            Vector2 knockbackDirection = (transform.position - (Vector3)damageDealer).normalized;
-            StartCoroutine(ApplyKnockback(knockbackDirection, knockbackForce, knockbackDuration));
+            base.TakeDamage(damage, damageDealer);
+
+            if (!isDying)
+            {
+                //Calculate the knockback direction
+                Vector2 knockbackDirection = (transform.position - (Vector3)damageDealer).normalized;
+                StartCoroutine(ApplyKnockback(knockbackDirection, knockbackForce, knockbackDuration));              
+            }
+            StartCoroutine(InvulnerabilityCoroutine());
         }
+
     }
 
     public override IEnumerator FlashSprite()

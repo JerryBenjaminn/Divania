@@ -14,6 +14,10 @@ public class CharacterHealthSystem : MonoBehaviour
     //Reference to the enemy
     private EnemyController enemy;
 
+    [Header("Invulnerability settings")]
+    [SerializeField] protected float invulnerabilityDuration = 1f;
+    protected bool isInvulnerable = false;
+
     [Header("Hurt settings")]
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected float flashDuration = 0.1f;
@@ -79,6 +83,12 @@ public class CharacterHealthSystem : MonoBehaviour
             yield return new WaitForSeconds(flashDuration);
         }
         spriteRenderer.material.color = Color.white; // reset color to normal
+    }
+    protected virtual IEnumerator InvulnerabilityCoroutine()
+    {
+        isInvulnerable = true;
+        yield return new WaitForSeconds(invulnerabilityDuration);
+        isInvulnerable = false;
     }
     private void DisableColliderAndRigidbody()
     {

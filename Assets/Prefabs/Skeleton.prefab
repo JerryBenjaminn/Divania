@@ -78,6 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthSystem: {fileID: 5790066487286118411}
   animator: {fileID: 481731128}
+  invulnerabilityDuration: 0.5
   spriteRenderer: {fileID: 5790066487286118414}
   flashDuration: 0.1
   numberOfFlashes: 1

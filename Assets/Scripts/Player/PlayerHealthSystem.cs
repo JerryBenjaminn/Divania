@@ -7,9 +7,7 @@ public class PlayerHealthSystem : CharacterHealthSystem
     //Reference to the Player Controller
     [SerializeField] private PlayerController playerController;
 
-    [Header("Invulnerability settings")]
-    [SerializeField] private float invulnerabilityDuration = 1f;
-    private bool isInvulnerable = false;
+
 
     public override void TakeDamage(int damage, Vector2 damageDealer)
     {
@@ -52,12 +50,7 @@ public class PlayerHealthSystem : CharacterHealthSystem
         playerController.enabled = true;
     }
 
-    private IEnumerator InvulnerabilityCoroutine()
-    {
-        isInvulnerable = true;
-        yield return new WaitForSeconds(invulnerabilityDuration);
-        isInvulnerable = false;
-    }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         // Check if the object we collided is an enemy and the player is not invulnerable

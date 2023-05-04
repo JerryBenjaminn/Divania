@@ -2384,7 +2384,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3503862534857633252, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
       propertyPath: meleeAttackDuration
-      value: 0.25
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3503862534857633260, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
       propertyPath: m_Name
