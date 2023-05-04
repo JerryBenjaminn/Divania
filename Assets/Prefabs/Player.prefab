@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 3503862534857633250}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
   moveSpeed: 5
   variableJumpHeightMultiplier: 0.1
   jumpForce: 10
-  jumpCooldown: 0.9
+  jumpCooldown: 0.75
   groundCheck: {fileID: 3503862535844355703}
   groundCheckRadius: 0.24
   isGrounded: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
   attackPower: 0
   maxHealth: 0
   defencePower: 0
-  meleeAttackDuration: 0.5
+  meleeAttackDuration: 0.2
   weaponHitArea: {fileID: 3503862534857633255}
   playerStats: {fileID: 11400000, guid: 5f82bb27c4fa06d43b32df5c65422871, type: 2}
   healthSystem: {fileID: 1866017735707698222}
@@ -101,11 +101,13 @@ MonoBehaviour:
   animator: {fileID: 3503862534857633250}
   spriteRenderer: {fileID: 3503862534857633249}
   flashDuration: 0.1
-  numberOfFlashes: 5
-  knockbackForce: 5
-  knockbackDuration: 0.5
+  numberOfFlashes: 10
+  knockbackForce: 10
+  knockbackDuration: 0.75
+  knockbackAngle: 45
   isDying: 0
   playerController: {fileID: 3503862534857633251}
+  invulnerabilityDuration: 2
 --- !u!114 &1866017735707698222
 MonoBehaviour:
   m_ObjectHideFlags: 0

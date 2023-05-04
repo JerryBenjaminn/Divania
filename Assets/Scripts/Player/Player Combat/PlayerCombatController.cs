@@ -11,7 +11,10 @@ public class PlayerCombatController : MonoBehaviour
 
     [Header("Melee Attack Settings")]
     [SerializeField] private float meleeAttackDuration;
+    [SerializeField] private float attackDelay = 0.5f;
     [SerializeField] private WeaponHitArea weaponHitArea;
+
+    private float lastAttackTime; //Time since last attack
     public int MeleeDamage => attackPower;
 
     private bool isJumpAttacking;
@@ -42,9 +45,17 @@ public class PlayerCombatController : MonoBehaviour
     }
     public void PerformMeleeAttack()
     {
+        if (!CanAttack())
+        {
+            return;
+        }
+
+        lastAttackTime = Time.time;
+
         //Attack depending if player is in the air or not
         if (playerController.IsGrounded)
         {
+            playerController.StopMovement();
             StartCoroutine(MeleeAttack());
         }
         else
@@ -58,6 +69,9 @@ public class PlayerCombatController : MonoBehaviour
         //Start the attack animation
         animatorController.SetAttackAnimation(true);
 
+        //Disable player movement
+        playerController.SetCanMove(false);
+
         //Enable hit detection
         weaponHitArea.EnableHitDetection();
         
@@ -66,6 +80,9 @@ public class PlayerCombatController : MonoBehaviour
 
         //Disable hit detection
         weaponHitArea.DisableHitDetection();
+
+        //Enable player movement
+        playerController.SetCanMove(true);
 
         //Stop the attack animation
         animatorController.SetAttackAnimation(false);
@@ -93,5 +110,9 @@ public class PlayerCombatController : MonoBehaviour
 
         //Stop the jump attack animation
         animatorController.SetJumpAttackAnimation(false);
+    }
+    public bool CanAttack()
+    {
+        return Time.time >= lastAttackTime + attackDelay;
     }
 }

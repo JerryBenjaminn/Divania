@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private float moveInput;
+    private bool canMove = true;
 
     private PlayerAnimatorController animatorController;
     private PlayerCombatController combatController;
@@ -68,51 +69,55 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        //Assigning the check to the variable
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        //If player is grounded reset the coyote time
-        if (isGrounded)
+        if (canMove)
         {
-            coyoteTime = coyoteTimeDuration;
+            //Assigning the check to the variable
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+
+            //If player is grounded reset the coyote time
+            if (isGrounded)
+            {
+                coyoteTime = coyoteTimeDuration;
+            }
+
+            //If player is in the air start reducing the coyote time
+            else if (wasGrounded)
+            {
+                coyoteTime -= Time.deltaTime;
+            }
+
+            //Start to increase the jump timer until it reaches the value of the cooldown
+            if (jumpTimer < jumpCooldown)
+            {
+                jumpTimer += Time.deltaTime;
+            }
+
+            //Check if the jump timer is same or higher that the cooldown when pressing the jump button
+            if (Input.GetButtonDown("Jump") && jumpTimer >= jumpCooldown)
+            {
+                jumpRequest = true;
+                jumpTimer = 0;
+            }
+
+            //Saving the ground check for the next frame
+            wasGrounded = isGrounded;
+
+            //Call the methods to get input and flip the player sprite
+            GetInput();
+            FlipPlayer(moveInput);
+
+            //Set the values for the animator
+            animatorController.SetMoveAnimation(moveInput);
+            animatorController.SetJumpAnimation(rb.velocity.y);
+            animatorController.SetGroundedAnimation(isGrounded);
+
+            //If the left mouse button is presses, perform a melee attack
+            if (Input.GetMouseButtonDown(0))
+            {
+                combatController.PerformMeleeAttack();
+            }
         }
 
-        //If player is in the air start reducing the coyote time
-        else if (wasGrounded)
-        {
-            coyoteTime -= Time.deltaTime;
-        }
-
-        //Start to increase the jump timer until it reaches the value of the cooldown
-        if(jumpTimer < jumpCooldown)
-        {
-            jumpTimer += Time.deltaTime;
-        }
-
-        //Check if the jump timer is same or higher that the cooldown when pressing the jump button
-        if (Input.GetButtonDown("Jump") && jumpTimer >= jumpCooldown)
-        {
-            jumpRequest = true;
-            jumpTimer = 0;
-        }
-
-        //Saving the ground check for the next frame
-        wasGrounded = isGrounded;
-
-        //Call the methods to get input and flip the player sprite
-        GetInput();
-        FlipPlayer(moveInput);
-        
-        //Set the values for the animator
-        animatorController.SetMoveAnimation(moveInput);
-        animatorController.SetJumpAnimation(rb.velocity.y);
-        animatorController.SetGroundedAnimation(isGrounded);
-
-        //If the left mouse button is presses, perform a melee attack
-        if (Input.GetMouseButtonDown(0))
-        {
-            combatController.PerformMeleeAttack();
-        }
     }
     private void FixedUpdate()
     {
@@ -159,6 +164,14 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
+    }
+    public void SetCanMove(bool canMove)
+    {
+        this.canMove = canMove;
+    }
+    public void StopMovement()
+    {
+        rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
     private void OnDrawGizmosSelected()

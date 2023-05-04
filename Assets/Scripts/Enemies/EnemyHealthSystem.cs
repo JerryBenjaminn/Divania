@@ -39,12 +39,5 @@ public class EnemyHealthSystem : CharacterHealthSystem
         // Clear the forces from the Rigidbody
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
-    private void DisableCollider()
-    {
-        Collider2D collider = GetComponent<Collider2D>();
-        if(collider != null)
-        {
-            collider.enabled = false;
-        }
-    }
+
 }
