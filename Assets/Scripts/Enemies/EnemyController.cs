@@ -12,6 +12,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float detectionRange; // Distance at which the enemy detects the player
     [SerializeField] private float moveSpeed; // Speed at which the enemy moves towards the player
 
+    [Header("Edge Detection")]
+    [SerializeField] protected LayerMask groundLayer;
+    [SerializeField] protected float edgeDetectionDistance = 0.5f;
+    [SerializeField] protected Vector2 edgeDetectionOffset;
+
     [Header("References")]
     [SerializeField] private Transform player; // Reference to the player's transform
     [SerializeField] private Animator animator; // Reference to the animator component
@@ -47,9 +52,9 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void MoveTowardsPlayer()
+    protected virtual void MoveTowardsPlayer()
     {
-        if(player != null)
+        if (player != null)
         {
             // Calculate the direction towards the player
             Vector2 direction = (player.position - transform.position).normalized;
@@ -66,10 +71,16 @@ public class EnemyController : MonoBehaviour
                 transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
 
-            // Move the enemy in that direction
-            transform.Translate(direction * moveSpeed * Time.deltaTime);
-        }
+            // Check for ground before moving
+            Vector2 edgeDetectionPosition = new Vector2(transform.position.x + edgeDetectionOffset.x * Mathf.Sign(transform.localScale.x), transform.position.y + edgeDetectionOffset.y);
+            bool isGroundAhead = Physics2D.Raycast(edgeDetectionPosition, Vector2.down, edgeDetectionDistance, groundLayer);
 
+            // If ground is detected, move the enemy in that direction
+            if (isGroundAhead)
+            {
+                transform.Translate(direction * moveSpeed * Time.deltaTime);
+            }
+        }
     }
 
     // This function is called from the animator at the end of the rise animation
@@ -97,10 +108,13 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+        Vector2 edgeDetectionPosition = new Vector2(transform.position.x + edgeDetectionOffset.x * Mathf.Sign(transform.localScale.x), transform.position.y + edgeDetectionOffset.y);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(edgeDetectionPosition, edgeDetectionPosition + Vector2.down * edgeDetectionDistance);
     }
 }
