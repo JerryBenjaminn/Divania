@@ -12,6 +12,7 @@ public class WeaponHitArea : MonoBehaviour
     private List<Collider2D> collidersInHitArea = new List<Collider2D>();
     private List<Collider2D> recentlyHitColliders = new List<Collider2D>();
 
+
     private void FixedUpdate()
     {
         // Check all the hits with colliders while attacking
@@ -37,6 +38,16 @@ public class WeaponHitArea : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         collidersInHitArea.Add(collision);
+
+        if (canHit == true && collision.CompareTag("Enemy"))
+        {
+            EnemyHealthSystem enemyHealth = collision.GetComponent<EnemyHealthSystem>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(playerCombatController.MeleeDamage, transform.position);
+                playerCombatController.TriggerCameraShake(); 
+            }
+        }
     }
 
     //If a collider leaves the range, remove it from the list

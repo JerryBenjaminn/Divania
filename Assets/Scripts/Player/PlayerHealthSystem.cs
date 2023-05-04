@@ -7,12 +7,25 @@ public class PlayerHealthSystem : CharacterHealthSystem
     //Reference to the Player Controller
     [SerializeField] private PlayerController playerController;
 
+    [Header("Camera Shake Settings")]
+    [SerializeField] private CameraShake cameraShake;
+    [SerializeField] private float shakeDuration = 0.1f;
+    [SerializeField] private float shakeMagnitude = 0.1f;
 
 
     public override void TakeDamage(int damage, Vector2 damageDealer)
     {
         if (!isInvulnerable)
         {
+            if(cameraShake != null)
+            {
+                TriggerCameraShake();
+            }
+            else
+            {
+                Debug.Log("Camera Shake not assigned in PlayerHealthSystem");
+            }
+            
             base.TakeDamage(damage, damageDealer);
 
             if (!isDying)
@@ -61,6 +74,10 @@ public class PlayerHealthSystem : CharacterHealthSystem
             TakeDamage(enemyController.AttackPower, collision.contacts[0].point);
             StartCoroutine(InvulnerabilityCoroutine());
         }
+    }
+    public void TriggerCameraShake()
+    {
+        cameraShake.Shake(shakeDuration, shakeMagnitude);
     }
 
 }

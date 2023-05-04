@@ -90,7 +90,7 @@ public class PlayerCombatController : MonoBehaviour
         weaponHitArea.EnableHitDetection();
 
         // Start camera shake
-        cameraShake.Shake(shakeDuration, shakeMagnitude);
+       // cameraShake.Shake(shakeDuration, shakeMagnitude);
 
         //Wait for the duration of the attack
         yield return new WaitForSeconds(meleeAttackDuration);
@@ -121,7 +121,7 @@ public class PlayerCombatController : MonoBehaviour
         weaponHitArea.EnableHitDetection();
 
         // Start camera shake
-        cameraShake.Shake(shakeDuration, shakeMagnitude);
+        //cameraShake.Shake(shakeDuration, shakeMagnitude);
 
         //Wait for the duration of the attack
         yield return new WaitForSeconds(meleeAttackDuration);
@@ -140,5 +140,9 @@ public class PlayerCombatController : MonoBehaviour
     public bool CanAttack()
     {
         return Time.time >= lastAttackTime + attackDelay;
+    }
+    public void TriggerCameraShake()
+    {
+        cameraShake.Shake(shakeDuration, shakeMagnitude);
     }
 }
