@@ -20,6 +20,7 @@ public class CharacterHealthSystem : MonoBehaviour
     [SerializeField] protected int numberOfFlashes = 3;
     [SerializeField] protected float knockbackForce = 5;
     [SerializeField] protected float knockbackDuration = 0.5f;
+    [SerializeField] protected float knockbackAngle = 45f;
 
     public bool isDying = false;
 

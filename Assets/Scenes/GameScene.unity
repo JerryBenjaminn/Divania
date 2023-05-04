@@ -926,7 +926,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_LocalRotation: {x: 0.05692146, y: 0.000000058811153, z: -0.0000000033530532, w: 0.9983787}
+  m_LocalRotation: {x: 0.05692146, y: 0.000000024096, z: -0.0000000013738066, w: 0.9983787}
   m_LocalPosition: {x: -17.490002, y: -188.47241, z: -22.968542}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1154,7 +1154,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646096010}
-  m_LocalRotation: {x: 0.05692146, y: 0.000000058811153, z: -0.0000000033530532, w: 0.9983787}
+  m_LocalRotation: {x: 0.05692146, y: 0.000000024096, z: -0.0000000013738066, w: 0.9983787}
   m_LocalPosition: {x: -17.490002, y: -188.47241, z: -22.968542}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2337,15 +2337,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5830461439599933705, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
       propertyPath: knockbackForce
-      value: 4
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5830461439599933705, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
       propertyPath: numberOfFlashes
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5830461439599933705, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
       propertyPath: knockbackDuration
-      value: 0.5
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830461439599933705, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
+      propertyPath: invulnerabilityDuration
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2938758566258154897, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}

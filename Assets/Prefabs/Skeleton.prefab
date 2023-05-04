@@ -61,9 +61,9 @@ MonoBehaviour:
   edgeDetectionDistance: 2
   edgeDetectionOffset: {x: -0.19, y: 1.17}
   player: {fileID: 0}
-  animator: {fileID: 481731128}
   enemyStats: {fileID: 11400000, guid: fac4e969a7689fb429ef764ca839c5d6, type: 2}
   enemyHealth: {fileID: 2346708119081364204}
+  animator: {fileID: 481731128}
 --- !u!114 &2346708119081364204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 5790066487286118414}
   flashDuration: 0.1
   numberOfFlashes: 1
-  knockbackForce: 30
+  knockbackForce: 100
   knockbackDuration: 0.2
   isDying: 0
 --- !u!114 &5790066487286118411
@@ -209,7 +209,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 10
+  m_Mass: 50
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
