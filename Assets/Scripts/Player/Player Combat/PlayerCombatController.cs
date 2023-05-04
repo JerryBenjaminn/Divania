@@ -14,6 +14,11 @@ public class PlayerCombatController : MonoBehaviour
     [SerializeField] private float attackDelay = 0.5f;
     [SerializeField] private WeaponHitArea weaponHitArea;
 
+    [Header("Camera Shake On Hit Settings")]
+    [SerializeField] private CameraShake cameraShake;
+    [SerializeField] private float shakeDuration = 0.1f;
+    [SerializeField] private float shakeMagnitude = 0.1f;
+
     private float lastAttackTime; //Time since last attack
     public int MeleeDamage => attackPower;
 
@@ -83,7 +88,10 @@ public class PlayerCombatController : MonoBehaviour
 
         //Enable hit detection
         weaponHitArea.EnableHitDetection();
-        
+
+        // Start camera shake
+        cameraShake.Shake(shakeDuration, shakeMagnitude);
+
         //Wait for the duration of the attack
         yield return new WaitForSeconds(meleeAttackDuration);
 
@@ -111,6 +119,9 @@ public class PlayerCombatController : MonoBehaviour
 
         //Enable hit detection
         weaponHitArea.EnableHitDetection();
+
+        // Start camera shake
+        cameraShake.Shake(shakeDuration, shakeMagnitude);
 
         //Wait for the duration of the attack
         yield return new WaitForSeconds(meleeAttackDuration);

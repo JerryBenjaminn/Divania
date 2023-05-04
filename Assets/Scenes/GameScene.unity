@@ -934,7 +934,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_LocalRotation: {x: 0.056921482, y: 0.000000024632321, z: -0.0000000014043849, w: 0.9983787}
+  m_LocalRotation: {x: 0.056921452, y: 0.00000002367271, z: -0.000000001349673, w: 0.9983787}
   m_LocalPosition: {x: -24.640001, y: -188.47241, z: -22.968542}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1098,9 +1098,10 @@ GameObject:
   - component: {fileID: 646096013}
   - component: {fileID: 646096012}
   - component: {fileID: 646096011}
+  - component: {fileID: 646096014}
   m_Layer: 0
   m_Name: PlayerCamera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1162,7 +1163,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646096010}
-  m_LocalRotation: {x: 0.056921482, y: 0.000000024632321, z: -0.0000000014043849, w: 0.9983787}
+  m_LocalRotation: {x: 0.056921452, y: 0.00000002367271, z: -0.000000001349673, w: 0.9983787}
   m_LocalPosition: {x: -24.640001, y: -188.47241, z: -22.968542}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1171,6 +1172,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &646096014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646096010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4221d701ee15b439766fa125b54448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCamera: {fileID: 646096012}
 --- !u!4 &672362153 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3503862534857633248, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
@@ -1573,6 +1587,7 @@ GameObject:
   - component: {fileID: 1288505129}
   - component: {fileID: 1288505131}
   - component: {fileID: 1288505130}
+  - component: {fileID: 1288505132}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -1677,6 +1692,23 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &1288505132
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288505125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 381292e64fef68148a95de0393f04246, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0.68
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1524671111
 GameObject:
   m_ObjectHideFlags: 0
@@ -2390,6 +2422,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3503862534857633252, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
+      propertyPath: cameraShake
+      value: 
+      objectReference: {fileID: 646096014}
     - target: {fileID: 3503862534857633252, guid: 12cc21a95c7065e4ea658f10663ae940, type: 3}
       propertyPath: meleeAttackDuration
       value: 0.5
