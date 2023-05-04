@@ -19,10 +19,9 @@ public class EnemyController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Transform player; // Reference to the player's transform
-    [SerializeField] private Animator animator; // Reference to the animator component
 
-    private bool isPlayerDetected = false; // Whether the player has been detected
-    private bool hasRisen = false; // Whether the rise animation has completed
+    protected bool isPlayerDetected = false; // Whether the player has been detected
+
 
     [SerializeField] private CharacterStats enemyStats;
     [SerializeField] private EnemyHealthSystem enemyHealth;
@@ -34,19 +33,16 @@ public class EnemyController : MonoBehaviour
         maxHealth = enemyStats.maxHealth;
         defencePower = enemyStats.defensePower;
     }
-    private void Update()
+    protected virtual void Update()
     {
         // Check if the player is within the detection range
         if (player != null && !isPlayerDetected && Vector2.Distance(transform.position, player.position) <= detectionRange)
         {
             isPlayerDetected = true;
-
-            // Trigger the rise animation
-            animator.SetTrigger("Rise");
         }
 
-        // If the player has been detected and the rise animation has completed, move towards them
-        if (isPlayerDetected && hasRisen && !enemyHealth.isDying)
+        // If the player has been detected and the enemy can move, move towards them
+        if (isPlayerDetected && CanMove() && !enemyHealth.isDying)
         {
             MoveTowardsPlayer();
         }
@@ -82,11 +78,9 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
-
-    // This function is called from the animator at the end of the rise animation
-    public void RiseComplete()
+    protected virtual bool CanMove()
     {
-        hasRisen = true;
+        return true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -102,7 +96,8 @@ public class EnemyController : MonoBehaviour
 
             // Pass the contact point instead of the enemy's transform
             playerHealth.TakeDamage(enemyStats.attackPower, contactPoint);
-        }else if (collision.gameObject.CompareTag("Enemy"))
+        }
+        else if (collision.gameObject.CompareTag("Enemy"))
         {
             return;
         }
