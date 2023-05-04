@@ -58,4 +58,16 @@ public class PlayerHealthSystem : CharacterHealthSystem
         yield return new WaitForSeconds(invulnerabilityDuration);
         isInvulnerable = false;
     }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        // Check if the object we collided is an enemy and the player is not invulnerable
+        EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
+        if (enemyController != null && !isInvulnerable)
+        {
+            // Apply damage and knockback
+            TakeDamage(enemyController.AttackPower, collision.contacts[0].point);
+            StartCoroutine(InvulnerabilityCoroutine());
+        }
+    }
+
 }

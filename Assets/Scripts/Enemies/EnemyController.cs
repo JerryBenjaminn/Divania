@@ -8,6 +8,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private int maxHealth;
     [SerializeField] private int defencePower;
 
+    public int AttackPower
+    {
+        get { return attackPower; }
+    }
+
     [Header("Enemy Options")]
     [SerializeField] private float detectionRange; // Distance at which the enemy detects the player
     [SerializeField] private float moveSpeed; // Speed at which the enemy moves towards the player
