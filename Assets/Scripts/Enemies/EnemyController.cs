@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Enemy Options")]
     [SerializeField] private float detectionRange; // Distance at which the enemy detects the player
-    [SerializeField] private float moveSpeed; // Speed at which the enemy moves towards the player
+    [SerializeField] protected float moveSpeed; // Speed at which the enemy moves towards the player
 
     [Header("Edge Detection")]
     [SerializeField] protected LayerMask groundLayer;
@@ -23,13 +23,13 @@ public class EnemyController : MonoBehaviour
     [SerializeField] protected Vector2 edgeDetectionOffset;
 
     [Header("References")]
-    [SerializeField] private Transform player; // Reference to the player's transform
+    [SerializeField] protected Transform player; // Reference to the player's transform
 
     protected bool isPlayerDetected = false; // Whether the player has been detected
 
 
     [SerializeField] private CharacterStats enemyStats;
-    [SerializeField] private EnemyHealthSystem enemyHealth;
+    [SerializeField] protected EnemyHealthSystem enemyHealth;
 
 
     private void Start()
