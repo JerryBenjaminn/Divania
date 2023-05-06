@@ -34,11 +34,11 @@ public class BossController : MonoBehaviour
     }
     private void Update()
     {
-        if (playerTransform.position.x < transform.position.x && transform.localScale.x < 0)
+        if (playerTransform.position.x + 1  <= transform.position.x && transform.localScale.x < 0)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
-        else if (playerTransform.position.x > transform.position.x && transform.localScale.x > 0)
+        else if (playerTransform.position.x -1 >= transform.position.x && transform.localScale.x > 0)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
