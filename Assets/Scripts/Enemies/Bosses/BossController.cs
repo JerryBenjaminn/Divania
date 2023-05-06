@@ -27,12 +27,23 @@ public class BossController : MonoBehaviour
 
     private void Awake()
     {
-        bossRigidbody = GetComponent<Rigidbody2D>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        bossRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
     }
     private void Update()
     {
+        if (playerTransform.position.x < transform.position.x && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+        else if (playerTransform.position.x > transform.position.x && transform.localScale.x > 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+
+
         if (!isAttacking && Time.time >= timeSinceLastAttack + timeBetweenAttacks)
         {
             StartCoroutine(PerformAttack());
@@ -106,6 +117,7 @@ public class BossController : MonoBehaviour
         animator.SetBool(IsWalking, direction != Vector2.zero);
     }
 
+
     private void MoveBossPhase0()
     {
         // Implement the movement logic for phase 0 here
@@ -147,7 +159,7 @@ public class BossController : MonoBehaviour
         yield return new WaitForSeconds(1.0f); // Adjust the waiting time according to your Cast animation length
 
         // Spawn the magic attack
-        SpawnMagicAttack(playerTransform.position);
+        StartCoroutine(SpawnMagicAttackAfterDelay(playerTransform.position, 0.5f));
 
         // Set IsCasting back to false
         animator.SetBool(IsCasting, false);
@@ -180,7 +192,13 @@ public class BossController : MonoBehaviour
     }
     private void SpawnMagicAttack(Vector2 position)
     {
-        Instantiate(magicAttackPrefab, position, Quaternion.identity);
+        Vector2 spawnPosition = position + new Vector2(0, 1.5f); // Adjust the Y offset value as needed
+        Instantiate(magicAttackPrefab, spawnPosition, Quaternion.identity);
+    }
+    private IEnumerator SpawnMagicAttackAfterDelay(Vector2 position, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SpawnMagicAttack(position);
     }
     private void OnDrawGizmosSelected()
     {
