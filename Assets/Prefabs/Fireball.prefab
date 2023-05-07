@@ -14,9 +14,11 @@ GameObject:
   - component: {fileID: 6559932366832488757}
   - component: {fileID: 1314226713613424514}
   - component: {fileID: 6227485338832653244}
-  m_Layer: 0
+  - component: {fileID: 2988441108860976879}
+  - component: {fileID: 5108414938234488605}
+  m_Layer: 7
   m_Name: Fireball
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,3 +163,48 @@ MonoBehaviour:
   fireBallDamage: {fileID: 11400000, guid: 6d595faa5a2bc754782c0b2ccd77f361, type: 2}
   projectileDamage: 5
   destroyTime: 3
+--- !u!114 &2988441108860976879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4924757480485252460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769d7bfb2636dbf4b8512e658e3a7191, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterStats: {fileID: 11400000, guid: 6d595faa5a2bc754782c0b2ccd77f361, type: 2}
+  currentHealth: 0
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHeal:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5108414938234488605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4924757480485252460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6640029c4dacdbe49a902d84154be4c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSystem: {fileID: 2988441108860976879}
+  animator: {fileID: 1314226713613424514}
+  invulnerabilityDuration: 0
+  spriteRenderer: {fileID: 992565813129408384}
+  flashDuration: 0.1
+  numberOfFlashes: 1
+  knockbackForce: 1000
+  knockbackDuration: 5
+  knockbackAngle: 0
+  isDying: 0

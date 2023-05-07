@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class GhostController : MonoBehaviour
 {
@@ -22,7 +24,14 @@ public class GhostController : MonoBehaviour
     [SerializeField] private CharacterStats enemyStats;
     [SerializeField] private Transform player;
 
+    [Header("Ghost Options")]
+    [SerializeField] private float detectionRange;
+    [SerializeField] private float attackAnimationDuration;
+
     private SpriteRenderer ghostSprite;
+    private Animator animator;
+
+    private bool isAttacking = false;
 
     private float lastAttackTime;
 
@@ -33,11 +42,12 @@ public class GhostController : MonoBehaviour
         defencePower = enemyStats.defensePower;
 
         ghostSprite = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (player != null && !enemyHealth.isDying)
+        if (player != null && !enemyHealth.isDying && Vector2.Distance(transform.position, player.position) <= detectionRange)
         {
             FollowPlayer();
             AttackPlayer();
@@ -70,12 +80,35 @@ public class GhostController : MonoBehaviour
     {
         if (Time.time > lastAttackTime + attackCooldown)
         {
-            lastAttackTime = Time.time;
-            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-            Vector2 direction = (player.position - transform.position).normalized;
-            projectile.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
+            if (!isAttacking)
+            {
+                StartCoroutine(PerformAttack());
+            }
         }
     }
+
+    private IEnumerator PerformAttack()
+    {
+        isAttacking = true;
+
+        // Start attack animation
+        StartAttackAnimation();
+
+        // Wait for the animation to finish (adjust the duration based on your animation length)
+        yield return new WaitForSeconds(attackAnimationDuration);
+
+        // Shoot the projectile
+        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        Vector2 direction = (player.position - transform.position).normalized;
+        projectile.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
+
+        // Stop attack animation
+        StopAttackAnimation();
+
+        lastAttackTime = Time.time;
+        isAttacking = false;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Check if the object we collided is the player
@@ -94,5 +127,20 @@ public class GhostController : MonoBehaviour
         {
             return;
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+    }
+
+    private void StartAttackAnimation()
+    {
+        animator.SetBool("IsAttacking", true);
+    }
+    private void StopAttackAnimation()
+    {
+        animator.SetBool("IsAttacking", false);
     }
 }
