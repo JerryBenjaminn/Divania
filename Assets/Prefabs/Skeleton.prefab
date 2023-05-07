@@ -78,13 +78,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthSystem: {fileID: 5790066487286118411}
   animator: {fileID: 481731128}
-  invulnerabilityDuration: 0.5
+  invulnerabilityDuration: 0.3
   spriteRenderer: {fileID: 5790066487286118414}
   flashDuration: 0.1
   numberOfFlashes: 1
   knockbackForce: 175
   knockbackDuration: 0.5
   knockbackAngle: 45
+  deathDuration: 1.5
   isDying: 0
 --- !u!114 &5790066487286118411
 MonoBehaviour:

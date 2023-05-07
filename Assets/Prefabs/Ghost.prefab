@@ -140,6 +140,7 @@ MonoBehaviour:
   knockbackForce: 5
   knockbackDuration: 0.5
   knockbackAngle: 45
+  deathDuration: 0.5
   isDying: 0
 --- !u!212 &9132398752275093307
 SpriteRenderer:

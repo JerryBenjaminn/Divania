@@ -26,6 +26,9 @@ public class CharacterHealthSystem : MonoBehaviour
     [SerializeField] protected float knockbackDuration = 0.5f;
     [SerializeField] protected float knockbackAngle = 45f;
 
+    [Header("Death Settings")]
+    [SerializeField] private float deathDuration = 0.2f;
+
     public bool isDying = false;
 
     private void Start()
@@ -63,12 +66,14 @@ public class CharacterHealthSystem : MonoBehaviour
     IEnumerator Die()
     {
         DisableColliderAndRigidbody();
+
         isDying = true;
+
         // Play the die animation
         animator.SetTrigger("Die");
 
         // Wait for the length of the animation
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(deathDuration);
 
         // Destroy the game object
         Destroy(gameObject);
