@@ -34,35 +34,39 @@ public class BossController : MonoBehaviour
     }
     private void Update()
     {
-        if (playerTransform.position.x + 3  <= transform.position.x && transform.localScale.x < 0)
+        if(playerTransform != null)
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        }
-        else if (playerTransform.position.x - 3 >= transform.position.x && transform.localScale.x > 0)
-        {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            if (playerTransform.position.x + 3 <= transform.position.x && transform.localScale.x < 0)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            }
+            else if (playerTransform.position.x - 3 >= transform.position.x && transform.localScale.x > 0)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            }
+
+            if (!isAttacking && Time.time >= timeSinceLastAttack + timeBetweenAttacks)
+            {
+                StartCoroutine(PerformAttack());
+            }
+            switch (currentPhase)
+            {
+                case 0:
+                    // Move logic for phase 0
+                    MoveBossPhase0();
+                    break;
+                case 1:
+                    // Move logic for phase 1
+                    MoveBossPhase1();
+                    break;
+                case 2:
+                    // Move logic for phase 2
+                    MoveBossPhase2();
+                    break;
+            }
         }
 
 
-        if (!isAttacking && Time.time >= timeSinceLastAttack + timeBetweenAttacks)
-        {
-            StartCoroutine(PerformAttack());
-        }
-        switch (currentPhase)
-        {
-            case 0:
-                // Move logic for phase 0
-                MoveBossPhase0();
-                break;
-            case 1:
-                // Move logic for phase 1
-                MoveBossPhase1();
-                break;
-            case 2:
-                // Move logic for phase 2
-                MoveBossPhase2();
-                break;
-        }
     }
 
     private IEnumerator PerformAttack()
