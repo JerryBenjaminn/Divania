@@ -21,6 +21,8 @@ public class BossController : MonoBehaviour
     [Header("Boss Attack Options")]
     [SerializeField] private int phase0Attack1Damage = 10;
 
+    [SerializeField] private Transform attackPoint;
+
     private PlayerHealthSystem playerHealthSystem;
 
     private Animator animator;
@@ -149,7 +151,7 @@ public class BossController : MonoBehaviour
     private IEnumerator Phase0Attack1()
     {
         // Execute attack 1 for phase 0
-        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+        float distanceToPlayer = Vector2.Distance(attackPoint.position, playerTransform.position);
 
         if (distanceToPlayer <= attack1Range)
         {
@@ -162,7 +164,7 @@ public class BossController : MonoBehaviour
             yield return new WaitForSeconds(damageDelay);
 
             // Deal damage to the player
-            playerHealthSystem.TakeDamage(phase0Attack1Damage, transform.position);
+            playerHealthSystem.TakeDamage(phase0Attack1Damage, attackPoint.position);
         }
     }
 
@@ -220,7 +222,7 @@ public class BossController : MonoBehaviour
     {
         // Draw a circle for the attack1 range
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attack1Range);
+        Gizmos.DrawWireSphere(attackPoint.position, attack1Range);
         Gizmos.DrawWireSphere(transform.position, magicAttackRange);
     }
 
