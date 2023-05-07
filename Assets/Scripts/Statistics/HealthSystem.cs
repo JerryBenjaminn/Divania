@@ -8,7 +8,7 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private CharacterStats characterStats;
 
     //Variable to save the current health value
-    [SerializeField] private int currentHealth;
+    [SerializeField] public int currentHealth;
     [SerializeField] private int maxHealth;
 
     //Unity-events for taking damage, healing and death
@@ -56,6 +56,10 @@ public class HealthSystem : MonoBehaviour
     {
         //Checks if the health is zero or less
         return currentHealth <= 0;
+    }
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
     }
 }
 

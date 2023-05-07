@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1181190526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1181190527}
+  m_Layer: 7
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1181190527
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181190526}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.355, y: -0.149, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4097935927371390752}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4097935927371390758
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,9 +40,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4097935927371390752}
+  - component: {fileID: 3323394888063200808}
   - component: {fileID: 1861132290234652217}
   - component: {fileID: 2637021034542746949}
-  - component: {fileID: 8482794572754014891}
   - component: {fileID: 4097935927371390759}
   - component: {fileID: 4097935927371390753}
   - component: {fileID: 4097935927371390754}
@@ -32,12 +63,36 @@ Transform:
   m_GameObject: {fileID: 4097935927371390758}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -30.25, y: -189.68, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 7.212162, y: 7.212162, z: 7.212162}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1181190527}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3323394888063200808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4097935927371390758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56dbb6b69f5ef564ebacbf7fb55c5ce8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSystem: {fileID: 2637021034542746949}
+  animator: {fileID: 4097935927371390753}
+  invulnerabilityDuration: 1
+  spriteRenderer: {fileID: 4097935927371390759}
+  flashDuration: 0.1
+  numberOfFlashes: 3
+  knockbackForce: 5
+  knockbackDuration: 0.5
+  knockbackAngle: 45
+  deathDuration: 0.2
+  isDying: 0
 --- !u!114 &1861132290234652217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52,11 +107,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentPhase: 0
   timeBetweenAttacks: 2
+  phase2HealthThreshold: 75
   moveSpeed: 1
-  attack1Range: 3.34
+  attack1Range: 3.29
+  attack2Range: 3
   magicAttackPrefab: {fileID: 7792886132335360282, guid: 530471827bdfb5c44902bde3fbbdf18f, type: 3}
   magicAttackRange: 15
   phase0Attack1Damage: 10
+  magicAttackBurstCount: 3
+  timeBetweenMagicAttacks: 0.5
+  attackPoint: {fileID: 1181190527}
 --- !u!114 &2637021034542746949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,29 +138,6 @@ MonoBehaviour:
   OnHeal:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8482794572754014891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4097935927371390758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6640029c4dacdbe49a902d84154be4c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthSystem: {fileID: 2637021034542746949}
-  animator: {fileID: 4097935927371390753}
-  invulnerabilityDuration: 1
-  spriteRenderer: {fileID: 4097935927371390759}
-  flashDuration: 0.1
-  numberOfFlashes: 3
-  knockbackForce: 5
-  knockbackDuration: 0.5
-  knockbackAngle: 45
-  deathDuration: 0.2
-  isDying: 0
 --- !u!212 &4097935927371390759
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -219,5 +256,5 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 6

@@ -12,18 +12,24 @@ public class BossController : MonoBehaviour
     private Transform playerTransform;
     private Rigidbody2D bossRigidbody;
 
+    [SerializeField] private int phase2HealthThreshold = 75;
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float attack1Range = 2.0f;
+    [SerializeField] private float attack2Range = 3f;
 
     [SerializeField] private GameObject magicAttackPrefab;
     [SerializeField] private float magicAttackRange = 10f;
 
     [Header("Boss Attack Options")]
     [SerializeField] private int phase0Attack1Damage = 10;
+    [SerializeField] private int magicAttackBurstCount = 3;
+    [SerializeField] private float timeBetweenMagicAttacks = 0.5f;
 
     [SerializeField] private Transform attackPoint;
 
     private PlayerHealthSystem playerHealthSystem;
+    private CharacterHealthSystem bossHealthSystem;
+    private HealthSystem healthSystem;
 
     private Animator animator;
     private static readonly int IsAttacking = Animator.StringToHash("IsAttacking");
@@ -38,7 +44,8 @@ public class BossController : MonoBehaviour
         playerHealthSystem = playerTransform.GetComponent<PlayerHealthSystem>();
         bossRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-
+        bossHealthSystem = GetComponent<BossHealthSystem>();
+        healthSystem = GetComponent<HealthSystem>();
     }
     private void Update()
     {
@@ -99,9 +106,9 @@ public class BossController : MonoBehaviour
             case 1:
                 // Execute attack 1 or attack 2 for phase 1
                 if (Random.Range(0, 2) == 0)
-                    Phase1Attack1();
+                    StartCoroutine(Phase1Attack1());
                 else
-                    Phase1Attack2();
+                    StartCoroutine(Phase1Attack2());
                 break;
             case 2:
                 // Execute attack 1 or attack 2 for phase 2
@@ -183,15 +190,38 @@ public class BossController : MonoBehaviour
         animator.SetBool(IsCasting, false);
     }
 
-    private void Phase1Attack1()
+    private IEnumerator Phase1Attack1()
     {
-        // Execute attack 1 for phase 1
+        // Execute attack 1 for phase 0
+        float distanceToPlayer = Vector2.Distance(attackPoint.position, playerTransform.position);
+
+        if (distanceToPlayer <= attack1Range)
+        {
+            // Execute the melee attack animation here
+            animator.SetBool(IsAttacking, true);
+            animator.SetInteger(AttackType, 2);
+
+            // Add a delay before dealing damage
+            float damageDelay = 1; // Adjust this value based on your animation
+            yield return new WaitForSeconds(damageDelay);
+
+            // Deal damage to the player
+            playerHealthSystem.TakeDamage(phase0Attack1Damage, attackPoint.position);
+        }
     }
 
-    private void Phase1Attack2()
+    private IEnumerator Phase1Attack2()
     {
-        // Execute attack 2 for phase 1
+        for (int i = 0; i < magicAttackBurstCount; i++)
+        {
+            animator.SetBool(IsCasting, true);
+            yield return new WaitForSeconds(1.0f); // Ota huomioon Cast-animaation kesto
+            StartCoroutine(SpawnMagicAttackAfterDelay(playerTransform.position, 0.5f));
+            animator.SetBool(IsCasting, false);
+            yield return new WaitForSeconds(timeBetweenMagicAttacks);
+        }
     }
+
 
     private void Phase2Attack1()
     {
@@ -208,6 +238,20 @@ public class BossController : MonoBehaviour
     {
         currentPhase = newPhase;
     }
+    public void TakeDamage(int damage)
+    {
+        if (currentPhase == 0 && healthSystem.GetCurrentHealth() <= phase2HealthThreshold)
+        {
+            Debug.Log("Entering the Phase 2");
+            ChangePhase(1);
+        }
+        else if (currentPhase == 1 && healthSystem.GetCurrentHealth() <= 35)
+        {
+            Debug.Log("Entering the Phase 3");
+            ChangePhase(2);
+        }
+    }
+
     private void SpawnMagicAttack(Vector2 position)
     {
         Vector2 spawnPosition = position + new Vector2(0, 1.5f); // Adjust the Y offset value as needed
@@ -218,6 +262,7 @@ public class BossController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         SpawnMagicAttack(position);
     }
+
     private void OnDrawGizmosSelected()
     {
         // Draw a circle for the attack1 range
