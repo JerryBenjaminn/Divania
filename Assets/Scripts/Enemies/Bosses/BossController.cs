@@ -18,6 +18,11 @@ public class BossController : MonoBehaviour
     [SerializeField] private GameObject magicAttackPrefab;
     [SerializeField] private float magicAttackRange = 10f;
 
+    [Header("Boss Attack Options")]
+    [SerializeField] private int phase0Attack1Damage = 10;
+
+    private PlayerHealthSystem playerHealthSystem;
+
     private Animator animator;
     private static readonly int IsAttacking = Animator.StringToHash("IsAttacking");
     private static readonly int AttackType = Animator.StringToHash("AttackType");
@@ -28,6 +33,7 @@ public class BossController : MonoBehaviour
     private void Awake()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        playerHealthSystem = playerTransform.GetComponent<PlayerHealthSystem>();
         bossRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
@@ -81,7 +87,7 @@ public class BossController : MonoBehaviour
                 float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
                 if (distanceToPlayer <= attack1Range)
                 {
-                    Phase0Attack1();
+                    StartCoroutine(Phase0Attack1());
                 }
                 else if (distanceToPlayer <= magicAttackRange)
                 {
@@ -140,7 +146,7 @@ public class BossController : MonoBehaviour
     }
 
 
-    private void Phase0Attack1()
+    private IEnumerator Phase0Attack1()
     {
         // Execute attack 1 for phase 0
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
@@ -150,7 +156,13 @@ public class BossController : MonoBehaviour
             // Execute the melee attack animation here
             animator.SetBool(IsAttacking, true);
             animator.SetInteger(AttackType, 1);
+
+            // Add a delay before dealing damage
+            float damageDelay = 1; // Adjust this value based on your animation
+            yield return new WaitForSeconds(damageDelay);
+
             // Deal damage to the player
+            playerHealthSystem.TakeDamage(phase0Attack1Damage, transform.position);
         }
     }
 

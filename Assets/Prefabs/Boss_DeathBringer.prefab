@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4097935927371390752}
   - component: {fileID: 1861132290234652217}
+  - component: {fileID: 2637021034542746949}
+  - component: {fileID: 8482794572754014891}
   - component: {fileID: 4097935927371390759}
   - component: {fileID: 4097935927371390753}
   - component: {fileID: 4097935927371390754}
@@ -54,6 +56,50 @@ MonoBehaviour:
   attack1Range: 2
   magicAttackPrefab: {fileID: 7792886132335360282, guid: 530471827bdfb5c44902bde3fbbdf18f, type: 3}
   magicAttackRange: 10
+--- !u!114 &2637021034542746949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4097935927371390758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769d7bfb2636dbf4b8512e658e3a7191, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterStats: {fileID: 11400000, guid: 3aa46e9cb8716d34aad5f4c935229132, type: 2}
+  currentHealth: 0
+  maxHealth: 0
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHeal:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8482794572754014891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4097935927371390758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6640029c4dacdbe49a902d84154be4c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSystem: {fileID: 2637021034542746949}
+  animator: {fileID: 4097935927371390753}
+  invulnerabilityDuration: 1
+  spriteRenderer: {fileID: 4097935927371390759}
+  flashDuration: 0.1
+  numberOfFlashes: 3
+  knockbackForce: 5
+  knockbackDuration: 0.5
+  knockbackAngle: 45
+  deathDuration: 0.2
+  isDying: 0
 --- !u!212 &4097935927371390759
 SpriteRenderer:
   m_ObjectHideFlags: 0
