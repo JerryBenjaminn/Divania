@@ -28,8 +28,22 @@ public class GhostController : MonoBehaviour
     [SerializeField] private float detectionRange;
     [SerializeField] private float attackAnimationDuration;
 
+    //Because wizard is really similiar with Ghost, we use this script and add a wizard spesific action
+    [Header("Wizard Options")]
+    [SerializeField] private bool isWizard;
+    [SerializeField] private float combustAttackRange;
+    [SerializeField] private float combustCooldown;
+    [SerializeField] private int combustDamage;
+    [SerializeField] private float combustDamageInterval = 0.5f;
+    [SerializeField] private float deathDuration = 0.2f;
+
+
+    private bool isCombustActive = false;
+    private float lastCombustTime;
+
     private SpriteRenderer ghostSprite;
     private Animator animator;
+    private HealthSystem healthSystem;
 
     private bool isAttacking = false;
 
@@ -51,6 +65,16 @@ public class GhostController : MonoBehaviour
         {
             FollowPlayer();
             AttackPlayer();
+        }
+        if (isWizard)
+        {
+            CombustAttack();
+        }
+
+        // Check if the enemy is dead
+        if (enemyHealth.healthSystem.IsDead() && !enemyHealth.isDying)
+        {
+            StartCoroutine(Die());
         }
 
     }
@@ -78,7 +102,7 @@ public class GhostController : MonoBehaviour
 
     private void AttackPlayer()
     {
-        if (Time.time > lastAttackTime + attackCooldown)
+        if (Time.time > lastAttackTime + attackCooldown && !isCombustActive)
         {
             if (!isAttacking)
             {
@@ -97,16 +121,33 @@ public class GhostController : MonoBehaviour
         // Wait for the animation to finish (adjust the duration based on your animation length)
         yield return new WaitForSeconds(attackAnimationDuration);
 
-        // Shoot the projectile
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-        Vector2 direction = (player.position - transform.position).normalized;
-        projectile.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
-
+        if(player != null)
+        {
+            // Shoot the projectile
+            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+            Vector2 direction = (player.position - transform.position).normalized;
+            projectile.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
+        }
+        
         // Stop attack animation
         StopAttackAnimation();
 
         lastAttackTime = Time.time;
         isAttacking = false;
+    }
+
+    private IEnumerator Die()
+    {
+        enemyHealth.isDying = true;
+
+        // Play the die animation
+        animator.SetTrigger("Die");
+
+        // Wait for the length of the animation
+        yield return new WaitForSeconds(deathDuration);
+
+        // Destroy the game object
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -129,10 +170,66 @@ public class GhostController : MonoBehaviour
         }
     }
 
+    private void CombustAttack()
+    {
+        if (player != null && Time.time > lastCombustTime + combustCooldown && Vector2.Distance(transform.position, player.position) <= combustAttackRange)
+        {
+            lastCombustTime = Time.time;
+
+            //Set isCombustActive to true
+            isCombustActive = true;
+
+            StartCoroutine(DealCombustDamage());
+        }
+    }
+
+    private IEnumerator DealCombustDamage()
+    {
+        //Trigger animation for the combust attack
+        animator.SetTrigger("Combust");
+
+        float delayBeforeDamage = 1.1f;
+        yield return new WaitForSeconds(delayBeforeDamage);
+
+        if (player != null)
+        {
+            float startTime = Time.time;
+
+            while (player != null && Time.time < startTime + attackAnimationDuration)
+            {
+                PlayerHealthSystem playerHealth = player.GetComponent<PlayerHealthSystem>();
+                if (playerHealth != null && Vector2.Distance(transform.position, player.position) <= combustAttackRange)
+                {
+                    playerHealth.TakeDamage(combustDamage, player.position);
+                }
+
+                yield return new WaitForSeconds(combustDamageInterval);
+            }
+
+            isCombustActive = false;
+        }
+    }
+
+
+    public void CombustAttackFinished()
+    {
+        // Set isCombustActive to false
+        isCombustActive = false;
+    }
+
+    public void DestroyEnemy()
+    {
+        Destroy(gameObject);
+    }
+
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, combustAttackRange);
     }
 
     private void StartAttackAnimation()

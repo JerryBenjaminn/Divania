@@ -85,9 +85,9 @@ MonoBehaviour:
   attackPower: 0
   maxHealth: 0
   defencePower: 0
-  projectilePrefab: {fileID: 4924757480485252460, guid: bbab9df30a83c4445ae1cb9caf5ccc05, type: 3}
-  projectileSpeed: 3
-  attackCooldown: 2
+  projectilePrefab: {fileID: 4924757480485252460, guid: b56ebc442bf4c4e4eb328b47d4a2c266, type: 3}
+  projectileSpeed: 4
+  attackCooldown: 3
   firePoint: {fileID: 3280508528957350230}
   followDistance: 0
   moveSpeed: 0
@@ -95,7 +95,12 @@ MonoBehaviour:
   enemyStats: {fileID: 11400000, guid: bd5c90b2a8585ce45b962e6d9ba486a8, type: 2}
   player: {fileID: 0}
   detectionRange: 5.06
-  attackAnimationDuration: 0
+  attackAnimationDuration: 2.2
+  isWizard: 1
+  combustAttackRange: 1.98
+  combustCooldown: 4
+  combustDamage: 15
+  combustDamageInterval: 1
 --- !u!114 &5199690553862606278
 MonoBehaviour:
   m_ObjectHideFlags: 0

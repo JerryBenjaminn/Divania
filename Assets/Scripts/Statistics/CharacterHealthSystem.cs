@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterHealthSystem : MonoBehaviour
 {
     //Reference to the health system
-    [SerializeField] private HealthSystem healthSystem;
+    [SerializeField] public HealthSystem healthSystem;
     //Reference to the animator
     [SerializeField] private Animator animator;
     //Reference to the rigidbody2d

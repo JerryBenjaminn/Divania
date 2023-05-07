@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -8,21 +9,24 @@ public class HealthSystem : MonoBehaviour
 
     //Variable to save the current health value
     [SerializeField] private int currentHealth;
+    [SerializeField] private int maxHealth;
 
     //Unity-events for taking damage, healing and death
     public UnityEvent OnTakeDamage;
     public UnityEvent OnHeal;
-    public UnityEvent OnDeath;
+    public event Action OnDeath;
 
     private void Start()
     {
-        //Set the current health to be the max health
-        currentHealth = characterStats.maxHealth;
+        // Set the max health from the characterStats
+        maxHealth = characterStats.maxHealth;
+        // Set the current health to be the max health
+        currentHealth = maxHealth;
     }
 
     public void TakeDamage(int damage)
     {
-        //Calculates the damage by subsracting the defense power
+        //Calculates the damage by subtracting the defense power
         int actualDamage = Mathf.Max(damage - characterStats.defensePower, 0);
         currentHealth -= actualDamage;
         currentHealth = Mathf.Max(currentHealth, 0);
@@ -33,7 +37,8 @@ public class HealthSystem : MonoBehaviour
         //If the health reaches zero, call the method to handle death
         if (currentHealth == 0)
         {
-            OnDeath.Invoke();
+            // Check if the OnDeath event is not null before invoking it
+            OnDeath?.Invoke();
         }
     }
 
