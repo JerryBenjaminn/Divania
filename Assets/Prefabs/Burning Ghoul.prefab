@@ -50,15 +50,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a182bd25f10bb24fbcc1f6e09b179f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 7
-  moveSpeed: 5
-  stoppingDistance: 5
-  jumpForce: 6.1
-  explosionRadius: 5
+  detectionRange: 20
+  moveSpeed: 6
+  stoppingDistance: 8.81
+  jumpForce: 0.5
+  explosionRadius: 5.91
   explosionDamage: 20
   jumpHeight: 10
-  jumpDistance: 5.7
+  jumpWaitTime: 2
   explosionPrefab: {fileID: 8439951405546684777, guid: 2c4ab39327a3f2945986796e7166f841, type: 3}
+  explosionAnimationDuration: 1
 --- !u!114 &6656838450068183661
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,6 @@ public class BurningGhoulController : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private float jumpHeight = 10f;
-    [SerializeField] private float jumpDistance = 5f;
     [SerializeField] private float jumpWaitTime = 2f;
 
     [Header("Explosion Animation")]
@@ -35,7 +34,7 @@ public class BurningGhoulController : MonoBehaviour
 
     private void Update()
     {
-        if (player != null && Vector2.Distance(transform.position, player.position) <= detectionRange)
+        if (player != null && !isJumping &&Vector2.Distance(transform.position, player.position) <= detectionRange)
         {
             MoveTowardsPlayer();
             if (Vector2.Distance(transform.position, player.position) <= stoppingDistance)
@@ -58,6 +57,8 @@ public class BurningGhoulController : MonoBehaviour
     }
     private IEnumerator JumpAndExplode()
     {
+        isJumping = true;
+
         // Calculate the distance and direction to the player
         Vector2 directionToPlayer = (player.position - transform.position).normalized;
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
@@ -71,6 +72,9 @@ public class BurningGhoulController : MonoBehaviour
 
         // Wait for the ghoul to reach the target position
         yield return new WaitForSeconds(jumpWaitTime);
+
+        // Destroy the ghoul
+        Destroy(gameObject);
 
         // Instantiate the explosion prefab
         GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
@@ -88,16 +92,7 @@ public class BurningGhoulController : MonoBehaviour
 
         // Wait for the explosion animation to complete
         yield return new WaitForSeconds(explosionAnimationDuration);
-
-        // Destroy the explosion prefab
-        Destroy(explosion);
-
-        // Destroy the ghoul
-        Destroy(gameObject);
     }
-
-
-
 
     private void OnDrawGizmosSelected()
     {
