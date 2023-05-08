@@ -162,7 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireBallDamage: {fileID: 11400000, guid: 6d595faa5a2bc754782c0b2ccd77f361, type: 2}
   projectileDamage: 5
-  destroyTime: 3
+  destroyTime: 2
 --- !u!114 &2988441108860976879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,13 +177,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterStats: {fileID: 11400000, guid: 6d595faa5a2bc754782c0b2ccd77f361, type: 2}
   currentHealth: 0
+  maxHealth: 0
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls: []
   OnHeal:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDeath:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &5108414938234488605
@@ -207,4 +205,5 @@ MonoBehaviour:
   knockbackForce: 1000
   knockbackDuration: 5
   knockbackAngle: 0
+  deathDuration: 0.2
   isDying: 0
