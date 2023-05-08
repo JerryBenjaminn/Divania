@@ -409,7 +409,7 @@ public class BossController : MonoBehaviour
             Debug.Log("Entering the Phase 2");
             ChangePhase(1);
         }
-        else if (currentPhase == 1 && healthSystem.GetCurrentHealth() <= 35)
+        else if (currentPhase == 1 && healthSystem.GetCurrentHealth() <= 50)
         {
             Debug.Log("Entering the Phase 3");
             ChangePhase(2);
