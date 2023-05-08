@@ -89,8 +89,10 @@ public class PlayerCombatController : MonoBehaviour
         //Enable hit detection
         weaponHitArea.EnableHitDetection();
 
+        AudioManager.instance.PlayAudioClip("PlayerMiss");
+
         // Start camera shake
-       // cameraShake.Shake(shakeDuration, shakeMagnitude);
+        // cameraShake.Shake(shakeDuration, shakeMagnitude);
 
         //Wait for the duration of the attack
         yield return new WaitForSeconds(meleeAttackDuration);
@@ -106,6 +108,7 @@ public class PlayerCombatController : MonoBehaviour
 
         IsAttacking = false;
         playerController.enabled = true;
+
     }
 
     private IEnumerator JumpAttack()
@@ -119,6 +122,8 @@ public class PlayerCombatController : MonoBehaviour
 
         //Enable hit detection
         weaponHitArea.EnableHitDetection();
+
+        AudioManager.instance.PlayAudioClip("PlayerMiss");
 
         // Start camera shake
         //cameraShake.Shake(shakeDuration, shakeMagnitude);

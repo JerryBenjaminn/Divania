@@ -33,6 +33,16 @@ public class HealthSystem : MonoBehaviour
         Debug.Log(currentHealth);
         //Call the method for taking the damage
         OnTakeDamage.Invoke();
+        if (CompareTag("Enemy"))
+        {
+            AudioManager.instance.PlayAudioClip("EnemyHurt");
+            AudioManager.instance.PlayAudioClip("PlayerMeleeAttack");
+        }
+        else
+        {
+            AudioManager.instance.PlayAudioClip("PlayerHurt");
+        }
+        
 
         //If the health reaches zero, call the method to handle death
         if (currentHealth == 0)

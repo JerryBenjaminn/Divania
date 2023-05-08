@@ -16,6 +16,7 @@ public class BossHealthSystem : EnemyHealthSystem
         if (bossController != null)
         {
             bossController.TakeDamage(damage);
+            AudioManager.instance.PlayAudioClip("BossHurt");
         }
     }
 }

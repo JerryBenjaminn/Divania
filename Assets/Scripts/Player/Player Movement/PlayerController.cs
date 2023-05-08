@@ -145,6 +145,7 @@ public class PlayerController : MonoBehaviour
         if (jumpRequest && coyoteTime > 0)
         {
             rb.AddForce(Vector2.up.normalized * jumpForce, ForceMode2D.Impulse);
+            AudioManager.instance.PlayAudioClip("PlayerJump");
             jumpRequest = false;
         }
 
