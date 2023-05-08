@@ -58,47 +58,43 @@ public class BossController : MonoBehaviour
     }
     private void Update()
     {
-        if(playerTransform != null)
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+
+        if (distanceToPlayer <= detectionRange)
         {
-            float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-
-            if (distanceToPlayer <= detectionRange)
+            if (playerTransform.position.x + 3 <= transform.position.x && transform.localScale.x < 0)
             {
-                if (playerTransform.position.x + 3 <= transform.position.x && transform.localScale.x < 0)
-                {
-                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                }
-                else if (playerTransform.position.x - 3 >= transform.position.x && transform.localScale.x > 0)
-                {
-                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                }
-
-                if (!isAttacking && !isCasting && Time.time >= timeSinceLastAttack + timeBetweenAttacks)
-                {
-                    StartCoroutine(PerformAttack());
-                }
-                if (!isCasting && !isAttacking)
-                {
-                    switch (currentPhase)
-                    {
-                        case 0:
-                            // Move logic for phase 0
-                            MoveBossPhase0();
-                            break;
-                        case 1:
-                            // Move logic for phase 1
-                            MoveBossPhase1();
-                            break;
-                        case 2:
-                            // Move logic for phase 2
-                            MoveBossPhase2();
-                            break;
-                    }
-                }
-                CheckBossDeath();
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             }
+            else if (playerTransform.position.x - 3 >= transform.position.x && transform.localScale.x > 0)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            }
+
+            if (!isAttacking && !isCasting && Time.time >= timeSinceLastAttack + timeBetweenAttacks)
+            {
+                StartCoroutine(PerformAttack());
+            }
+            if (!isCasting && !isAttacking)
+            {
+                switch (currentPhase)
+                {
+                    case 0:
+                        // Move logic for phase 0
+                        MoveBossPhase0();
+                        break;
+                    case 1:
+                        // Move logic for phase 1
+                        MoveBossPhase1();
+                        break;
+                    case 2:
+                        // Move logic for phase 2
+                        MoveBossPhase2();
+                        break;
+                }
+            }
+            CheckBossDeath();
         }
-        
     }
 
     private void CheckBossDeath()
@@ -395,7 +391,6 @@ public class BossController : MonoBehaviour
         // Phase1Attack2-like magic attack
         for (int i = 0; i < magicAttackBurstCount; i++)
         {
-            if (playerTransform != null) yield break;
             animator.SetBool(IsCasting, true);
             isCasting = true;
             yield return new WaitForSeconds(1.0f); // Ota huomioon Cast-animaation kesto
