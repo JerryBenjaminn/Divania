@@ -8,6 +8,7 @@ public class BossController : MonoBehaviour
     [SerializeField] private float timeBetweenAttacks = 3.0f;
     private float timeSinceLastAttack = 0.0f;
     private bool isAttacking = false;
+    private bool isCasting = false;
 
     private Transform playerTransform;
     private Rigidbody2D bossRigidbody;
@@ -22,6 +23,7 @@ public class BossController : MonoBehaviour
 
     [Header("Boss Attack Options")]
     [SerializeField] private int phase0Attack1Damage = 10;
+    [SerializeField] private int phase0Attack2Damage = 10;
     [SerializeField] private int magicAttackBurstCount = 3;
     [SerializeField] private float timeBetweenMagicAttacks = 0.5f;
 
@@ -60,40 +62,44 @@ public class BossController : MonoBehaviour
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             }
 
-            if (!isAttacking && Time.time >= timeSinceLastAttack + timeBetweenAttacks)
+            if (!isAttacking && !isCasting && Time.time >= timeSinceLastAttack + timeBetweenAttacks)
             {
                 StartCoroutine(PerformAttack());
             }
-            switch (currentPhase)
+            if (!isCasting && !isAttacking)
             {
-                case 0:
-                    // Move logic for phase 0
-                    MoveBossPhase0();
-                    break;
-                case 1:
-                    // Move logic for phase 1
-                    MoveBossPhase1();
-                    break;
-                case 2:
-                    // Move logic for phase 2
-                    MoveBossPhase2();
-                    break;
+                switch (currentPhase)
+                {
+                    case 0:
+                        // Move logic for phase 0
+                        MoveBossPhase0();
+                        break;
+                    case 1:
+                        // Move logic for phase 1
+                        MoveBossPhase1();
+                        break;
+                    case 2:
+                        // Move logic for phase 2
+                        MoveBossPhase2();
+                        break;
+                }
             }
         }
-
-
     }
 
     private IEnumerator PerformAttack()
     {
+        float originalMoveSpeed = moveSpeed;
+        moveSpeed = 0;
         isAttacking = true;
-
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
         // Choose an attack based on the current phase
+
         switch (currentPhase)
         {
             case 0:
                 // Execute attack 1 or attack 2 for phase 0
-                float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+                
                 if (distanceToPlayer <= attack1Range)
                 {
                     StartCoroutine(Phase0Attack1());
@@ -104,18 +110,33 @@ public class BossController : MonoBehaviour
                 }
                 break;
             case 1:
-                // Execute attack 1 or attack 2 for phase 1
-                if (Random.Range(0, 2) == 0)
-                    StartCoroutine(Phase1Attack1());
-                else
-                    StartCoroutine(Phase1Attack2());
+
+                if(currentPhase == 1)
+                {
+                    // Execute attack 1 or attack 2 for phase 1
+                    if (distanceToPlayer <= attack2Range)
+                    {
+                        StartCoroutine(Phase1Attack1());
+                    }                      
+                    else if (distanceToPlayer <= magicAttackRange)
+                    {
+                        StartCoroutine(Phase1Attack2());
+                    }
+                        
+                }
+
                 break;
             case 2:
-                // Execute attack 1 or attack 2 for phase 2
-                if (Random.Range(0, 2) == 0)
-                    Phase2Attack1();
-                else
-                    Phase2Attack2();
+
+                if(currentPhase == 2)
+                {
+                    // Execute attack 1 or attack 2 for phase 2
+                    if (Random.Range(0, 2) == 0)
+                        Phase2Attack1();
+                    else
+                        Phase2Attack2();
+                }
+
                 break;
         }
 
@@ -125,11 +146,19 @@ public class BossController : MonoBehaviour
         animator.SetBool(IsAttacking, false);
 
         timeSinceLastAttack = Time.time;
+        moveSpeed = originalMoveSpeed;
         isAttacking = false;
     }
 
     private void MoveBoss(Vector2 direction)
     {
+        if (isAttacking || isCasting)
+        {
+            bossRigidbody.velocity = Vector2.zero;
+            animator.SetBool(IsWalking, false);
+            return;
+        }
+
         bossRigidbody.velocity = direction * moveSpeed;
 
         // Update the Animator parameter
@@ -146,7 +175,8 @@ public class BossController : MonoBehaviour
 
     private void MoveBossPhase1()
     {
-        // Implement the movement logic for phase 1 here
+        Vector2 directionToPlayer = (playerTransform.position - transform.position).normalized;
+        MoveBoss(directionToPlayer);
     }
 
     private void MoveBossPhase2()
@@ -179,6 +209,7 @@ public class BossController : MonoBehaviour
     {
         // Set IsCasting to true to start the Cast animation
         animator.SetBool(IsCasting, true);
+        isCasting = true;
 
         // Wait for the Cast animation to finish
         yield return new WaitForSeconds(1.0f); // Adjust the waiting time according to your Cast animation length
@@ -188,6 +219,7 @@ public class BossController : MonoBehaviour
 
         // Set IsCasting back to false
         animator.SetBool(IsCasting, false);
+        isCasting = false;
     }
 
     private IEnumerator Phase1Attack1()
@@ -195,7 +227,7 @@ public class BossController : MonoBehaviour
         // Execute attack 1 for phase 0
         float distanceToPlayer = Vector2.Distance(attackPoint.position, playerTransform.position);
 
-        if (distanceToPlayer <= attack1Range)
+        if (distanceToPlayer <= attack2Range)
         {
             // Execute the melee attack animation here
             animator.SetBool(IsAttacking, true);
@@ -206,7 +238,7 @@ public class BossController : MonoBehaviour
             yield return new WaitForSeconds(damageDelay);
 
             // Deal damage to the player
-            playerHealthSystem.TakeDamage(phase0Attack1Damage, attackPoint.position);
+            playerHealthSystem.TakeDamage(phase0Attack2Damage, attackPoint.position);
         }
     }
 
@@ -215,9 +247,11 @@ public class BossController : MonoBehaviour
         for (int i = 0; i < magicAttackBurstCount; i++)
         {
             animator.SetBool(IsCasting, true);
+            isCasting = true;
             yield return new WaitForSeconds(1.0f); // Ota huomioon Cast-animaation kesto
             StartCoroutine(SpawnMagicAttackAfterDelay(playerTransform.position, 0.5f));
             animator.SetBool(IsCasting, false);
+            isCasting = false;
             yield return new WaitForSeconds(timeBetweenMagicAttacks);
         }
     }
@@ -254,7 +288,7 @@ public class BossController : MonoBehaviour
 
     private void SpawnMagicAttack(Vector2 position)
     {
-        Vector2 spawnPosition = position + new Vector2(0, 1.5f); // Adjust the Y offset value as needed
+        Vector2 spawnPosition = position + new Vector2(0, 5); // Adjust the Y offset value as needed
         Instantiate(magicAttackPrefab, spawnPosition, Quaternion.identity);
     }
     private IEnumerator SpawnMagicAttackAfterDelay(Vector2 position, float delay)
