@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class BossController : MonoBehaviour
     [SerializeField] private int phase0Attack2Damage = 10;
     [SerializeField] private int magicAttackBurstCount = 3;
     [SerializeField] private float timeBetweenMagicAttacks = 0.5f;
+    [SerializeField] private float detectionRange = 5f;
 
     [SerializeField] private Transform attackPoint;
 
@@ -51,40 +53,76 @@ public class BossController : MonoBehaviour
     }
     private void Update()
     {
-        if(playerTransform != null)
-        {
-            if (playerTransform.position.x + 3 <= transform.position.x && transform.localScale.x < 0)
-            {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            }
-            else if (playerTransform.position.x - 3 >= transform.position.x && transform.localScale.x > 0)
-            {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            }
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
-            if (!isAttacking && !isCasting && Time.time >= timeSinceLastAttack + timeBetweenAttacks)
+        if(distanceToPlayer <= detectionRange)
+        {
+            if (playerTransform != null)
             {
-                StartCoroutine(PerformAttack());
-            }
-            if (!isCasting && !isAttacking)
-            {
-                switch (currentPhase)
+                if (playerTransform.position.x + 3 <= transform.position.x && transform.localScale.x < 0)
                 {
-                    case 0:
-                        // Move logic for phase 0
-                        MoveBossPhase0();
-                        break;
-                    case 1:
-                        // Move logic for phase 1
-                        MoveBossPhase1();
-                        break;
-                    case 2:
-                        // Move logic for phase 2
-                        MoveBossPhase2();
-                        break;
+                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                }
+                else if (playerTransform.position.x - 3 >= transform.position.x && transform.localScale.x > 0)
+                {
+                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                }
+
+                if (!isAttacking && !isCasting && Time.time >= timeSinceLastAttack + timeBetweenAttacks)
+                {
+                    StartCoroutine(PerformAttack());
+                }
+                if (!isCasting && !isAttacking)
+                {
+                    switch (currentPhase)
+                    {
+                        case 0:
+                            // Move logic for phase 0
+                            MoveBossPhase0();
+                            break;
+                        case 1:
+                            // Move logic for phase 1
+                            MoveBossPhase1();
+                            break;
+                        case 2:
+                            // Move logic for phase 2
+                            MoveBossPhase2();
+                            break;
+                    }
                 }
             }
+
+            CheckBossDeath();
         }
+
+
+    }
+
+    private void CheckBossDeath()
+    {
+        if (healthSystem.GetCurrentHealth() == 0)
+        {
+            Debug.Log("Triggering death animation");
+            StartCoroutine(BossDeathSequence());
+        }
+    }
+    private IEnumerator BossDeathSequence()
+    {
+        // Trigger the death animation
+        animator.SetTrigger("Die");
+
+        // Wait for the animation to finish before disabling the boss's components
+        // Replace AnimationLength with the actual length of the death animation
+        float animationLength = 2f;
+        yield return new WaitForSeconds(animationLength);
+
+        // Disable the boss's collider and AI scripts to prevent further interactions
+        GetComponent<Collider2D>().enabled = false;
+        this.enabled = false;
+
+        // Optional: Destroy the boss's GameObject after a short delay
+         yield return new WaitForSeconds(2f);
+         Destroy(gameObject);
     }
 
     private IEnumerator PerformAttack()
@@ -127,16 +165,18 @@ public class BossController : MonoBehaviour
 
                 break;
             case 2:
-
-                if(currentPhase == 2)
+                if (currentPhase == 2)
                 {
-                    // Execute attack 1 or attack 2 for phase 2
-                    if (Random.Range(0, 2) == 0)
+                    // Check the distance between the boss and the player
+                    if (distanceToPlayer > attack2Range) // If the player is far away, use Phase2Attack1
+                    {
                         StartCoroutine(Phase2Attack1());
-                    else
-                        Phase2Attack2();
+                    }
+                    else // If the player is close, use Phase2Attack2
+                    {
+                        StartCoroutine(Phase2Attack2());
+                    }
                 }
-
                 break;
         }
 
@@ -310,14 +350,52 @@ public class BossController : MonoBehaviour
         animator.SetBool("IsWalking", true);
     }
 
-
-
-
-
-    private void Phase2Attack2()
+    private IEnumerator Phase2Attack2()
     {
-        // Execute attack 2 for phase 2
+        Debug.Log("Starting Phase2Attack2");
+        animator.SetBool("IsWalking", false);
+
+        // Add the teleport out animation
+        animator.SetBool("IsTeleporting", true);
+        yield return new WaitForSeconds(1f); // Adjust the time to match the duration of your teleport out animation
+        animator.SetBool("IsTeleporting", false);
+
+        yield return new WaitForSeconds(0.5f); // Add a short delay between teleport out and teleport in animations
+
+        float currentY = transform.position.y;
+        float teleportOffsetX = 5.0f; // Adjust the teleport distance as needed
+        float teleportY = currentY;
+
+        // Determine which side of the player the boss should teleport to
+        float targetX = playerTransform.position.x - teleportOffsetX * Mathf.Sign(transform.localScale.x);
+        if (Mathf.Sign(targetX - playerTransform.position.x) == Mathf.Sign(transform.position.x - playerTransform.position.x))
+        {
+            targetX = playerTransform.position.x + teleportOffsetX * Mathf.Sign(transform.localScale.x);
+        }
+
+        Vector2 targetPosition = new Vector2(targetX, teleportY);
+        transform.position = targetPosition;
+
+        // Add the teleport in animation
+        animator.SetBool("IsTeleporting", true);
+        yield return new WaitForSeconds(1f); // Adjust the time to match the duration of your teleport in animation
+        animator.SetBool("IsTeleporting", false);
+
+        // Phase1Attack2-like magic attack
+        for (int i = 0; i < magicAttackBurstCount; i++)
+        {
+            animator.SetBool(IsCasting, true);
+            isCasting = true;
+            yield return new WaitForSeconds(1.0f); // Ota huomioon Cast-animaation kesto
+            StartCoroutine(SpawnMagicAttackAfterDelay(playerTransform.position, 0.5f));
+            animator.SetBool(IsCasting, false);
+            isCasting = false;
+            yield return new WaitForSeconds(timeBetweenMagicAttacks);
+        }
+
+        animator.SetBool("IsWalking", true);
     }
+
 
     // Call this function to change the boss's phase
     public void ChangePhase(int newPhase)

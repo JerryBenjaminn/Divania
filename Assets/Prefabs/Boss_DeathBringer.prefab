@@ -109,13 +109,14 @@ MonoBehaviour:
   timeBetweenAttacks: 2
   phase2HealthThreshold: 75
   moveSpeed: 1
-  attack1Range: 3.29
-  attack2Range: 3
+  attack1Range: 5.97
+  attack2Range: 6.49
   magicAttackPrefab: {fileID: 7792886132335360282, guid: 530471827bdfb5c44902bde3fbbdf18f, type: 3}
-  magicAttackRange: 15
+  magicAttackRange: 20.46
   phase0Attack1Damage: 10
-  magicAttackBurstCount: 3
-  timeBetweenMagicAttacks: 0.5
+  phase0Attack2Damage: 10
+  magicAttackBurstCount: 5
+  timeBetweenMagicAttacks: 1
   attackPoint: {fileID: 1181190527}
 --- !u!114 &2637021034542746949
 MonoBehaviour:
@@ -249,7 +250,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 100
+  m_Mass: 1000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
