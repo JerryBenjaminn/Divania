@@ -8,6 +8,7 @@ public class BossHealthBarUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bossNameText;
     [SerializeField] private CharacterStats bossStats;
     [SerializeField] private HealthSystem bossHealthSystem;
+    [SerializeField] private BossController bossController;
 
     private float maxHealth;
 

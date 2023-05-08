@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BossController : MonoBehaviour
 {
@@ -24,16 +25,20 @@ public class BossController : MonoBehaviour
 
     [Header("Boss Attack Options")]
     [SerializeField] private int phase0Attack1Damage = 10;
-    [SerializeField] private int phase0Attack2Damage = 10;
+    [SerializeField] private int phase0Attack2Damage = 20;
     [SerializeField] private int magicAttackBurstCount = 3;
     [SerializeField] private float timeBetweenMagicAttacks = 0.5f;
     [SerializeField] private float detectionRange = 5f;
+
+    [Header("Boss death event")]
+    public UnityEvent onBossDeath;
 
     [SerializeField] private Transform attackPoint;
 
     private PlayerHealthSystem playerHealthSystem;
     private CharacterHealthSystem bossHealthSystem;
     private HealthSystem healthSystem;
+    [SerializeField] private BossHealthBarUI bossHealthBarUI;
 
     private Animator animator;
     private static readonly int IsAttacking = Animator.StringToHash("IsAttacking");
@@ -53,11 +58,11 @@ public class BossController : MonoBehaviour
     }
     private void Update()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-
-        if(distanceToPlayer <= detectionRange)
+        if(playerTransform != null)
         {
-            if (playerTransform != null)
+            float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+
+            if (distanceToPlayer <= detectionRange)
             {
                 if (playerTransform.position.x + 3 <= transform.position.x && transform.localScale.x < 0)
                 {
@@ -90,12 +95,10 @@ public class BossController : MonoBehaviour
                             break;
                     }
                 }
+                CheckBossDeath();
             }
-
-            CheckBossDeath();
         }
-
-
+        
     }
 
     private void CheckBossDeath()
@@ -103,6 +106,9 @@ public class BossController : MonoBehaviour
         if (healthSystem.GetCurrentHealth() == 0)
         {
             Debug.Log("Triggering death animation");
+
+            //Hide the bossfight UI
+            bossHealthBarUI.Hide();
             StartCoroutine(BossDeathSequence());
         }
     }
@@ -119,6 +125,8 @@ public class BossController : MonoBehaviour
         // Disable the boss's collider and AI scripts to prevent further interactions
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
+
+        onBossDeath.Invoke();
 
         // Optional: Destroy the boss's GameObject after a short delay
          yield return new WaitForSeconds(2f);
@@ -366,15 +374,18 @@ public class BossController : MonoBehaviour
         float teleportOffsetX = 5.0f; // Adjust the teleport distance as needed
         float teleportY = currentY;
 
-        // Determine which side of the player the boss should teleport to
-        float targetX = playerTransform.position.x - teleportOffsetX * Mathf.Sign(transform.localScale.x);
-        if (Mathf.Sign(targetX - playerTransform.position.x) == Mathf.Sign(transform.position.x - playerTransform.position.x))
+        if(playerTransform != null)
         {
-            targetX = playerTransform.position.x + teleportOffsetX * Mathf.Sign(transform.localScale.x);
-        }
+            // Determine which side of the player the boss should teleport to
+            float targetX = playerTransform.position.x - teleportOffsetX * Mathf.Sign(transform.localScale.x);
+            if (Mathf.Sign(targetX - playerTransform.position.x) == Mathf.Sign(transform.position.x - playerTransform.position.x))
+            {
+                targetX = playerTransform.position.x + teleportOffsetX * Mathf.Sign(transform.localScale.x);
+            }
 
-        Vector2 targetPosition = new Vector2(targetX, teleportY);
-        transform.position = targetPosition;
+            Vector2 targetPosition = new Vector2(targetX, teleportY);
+            transform.position = targetPosition;
+        }
 
         // Add the teleport in animation
         animator.SetBool("IsTeleporting", true);
@@ -384,6 +395,7 @@ public class BossController : MonoBehaviour
         // Phase1Attack2-like magic attack
         for (int i = 0; i < magicAttackBurstCount; i++)
         {
+            if (playerTransform != null) yield break;
             animator.SetBool(IsCasting, true);
             isCasting = true;
             yield return new WaitForSeconds(1.0f); // Ota huomioon Cast-animaation kesto
@@ -409,7 +421,7 @@ public class BossController : MonoBehaviour
             Debug.Log("Entering the Phase 2");
             ChangePhase(1);
         }
-        else if (currentPhase == 1 && healthSystem.GetCurrentHealth() <= 50)
+        else if (currentPhase == 1 && healthSystem.GetCurrentHealth() <= 80)
         {
             Debug.Log("Entering the Phase 3");
             ChangePhase(2);
