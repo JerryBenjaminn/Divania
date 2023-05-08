@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float jumpCooldown = 0.2f;
 
+    [Header("Footstep Settings")]
+    [SerializeField] private string footstepSoundName;
+    [SerializeField] private Transform footstepPoint;
+
     //Variables for jumping
     private float jumpTimer;
     private bool jumpRequest;
@@ -175,6 +179,11 @@ public class PlayerController : MonoBehaviour
     public void StopMovement()
     {
         rb.velocity = new Vector2(0, rb.velocity.y);
+    }
+
+    private void PlayFootstepSound()
+    {
+        AudioManager.instance.PlayAudioClip(footstepSoundName);
     }
 
     private void OnDrawGizmosSelected()

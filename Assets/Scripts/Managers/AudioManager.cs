@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
 
-    [SerializeField] private List<AudioClip> audioClips;
+    [SerializeField] private List<AudioData> audioDataList;
 
     private void Awake()
     {
@@ -27,15 +27,25 @@ public class AudioManager : MonoBehaviour
 
     public void PlayAudioClip(string clipName)
     {
-        AudioClip clip = audioClips.Find(x => x.name == clipName);
-        if (clip != null)
+        AudioData data = audioDataList.Find(x => x.name == clipName);
+        if (data != null && data.clip != null)
         {
-            audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(data.clip, data.volume);
         }
         else
         {
             Debug.LogWarning("Audio clip not found: " + clipName);
         }
     }
+
+
+    [System.Serializable]
+    public class AudioData
+    {
+        public string name;
+        public AudioClip clip;
+        [Range(0f, 1f)] public float volume = 1f;
+    }
+
 }
 
