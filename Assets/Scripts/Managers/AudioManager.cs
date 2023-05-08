@@ -7,6 +7,8 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource backgroundMusicSource;
+    [SerializeField] private AudioClip bossBattleMusic;
 
     [SerializeField] private List<AudioData> audioDataList;
 
@@ -25,6 +27,14 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        AudioClip backgroundMusic = audioDataList.Find(x => x.name == "BackgroundMusic")?.clip;
+        float backgroundMusicVolume = audioDataList.Find(x => x.name == "BackgroundMusic")?.volume ?? 1f;
+        PlayBackgroundMusic(backgroundMusic, backgroundMusicVolume);
+    }
+
+
     public void PlayAudioClip(string clipName)
     {
         AudioData data = audioDataList.Find(x => x.name == clipName);
@@ -37,6 +47,38 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("Audio clip not found: " + clipName);
         }
     }
+
+    public void PlayBackgroundMusic(AudioClip clip, float volume = 1f)
+    {
+        if (clip != null)
+        {
+            backgroundMusicSource.clip = clip;
+            backgroundMusicSource.loop = true;
+            backgroundMusicSource.volume = volume;
+            backgroundMusicSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Background music clip is null");
+        }
+    }
+
+    public void PlayBossBattleMusic(float volume = 1f)
+    {
+        if (bossBattleMusic != null)
+        {
+            backgroundMusicSource.Stop();
+            backgroundMusicSource.clip = bossBattleMusic;
+            backgroundMusicSource.loop = true;
+            backgroundMusicSource.volume = volume;
+            backgroundMusicSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Boss battle music clip is null");
+        }
+    }
+
 
 
     [System.Serializable]
