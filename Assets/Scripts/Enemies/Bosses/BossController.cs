@@ -132,7 +132,7 @@ public class BossController : MonoBehaviour
                 {
                     // Execute attack 1 or attack 2 for phase 2
                     if (Random.Range(0, 2) == 0)
-                        Phase2Attack1();
+                        StartCoroutine(Phase2Attack1());
                     else
                         Phase2Attack2();
                 }
@@ -181,25 +181,26 @@ public class BossController : MonoBehaviour
 
     private void MoveBossPhase2()
     {
-        // Implement the movement logic for phase 2 here
+        Vector2 directionToPlayer = (playerTransform.position - transform.position).normalized;
+        MoveBoss(directionToPlayer);
     }
 
 
     private IEnumerator Phase0Attack1()
     {
+        // Execute the melee attack animation here
+        animator.SetBool(IsAttacking, true);
+        animator.SetInteger(AttackType, 1);
+
+        // Add a delay before dealing damage
+        float damageDelay = 1; // Adjust this value based on your animation
+        yield return new WaitForSeconds(damageDelay);
+
         // Execute attack 1 for phase 0
         float distanceToPlayer = Vector2.Distance(attackPoint.position, playerTransform.position);
 
         if (distanceToPlayer <= attack1Range)
         {
-            // Execute the melee attack animation here
-            animator.SetBool(IsAttacking, true);
-            animator.SetInteger(AttackType, 1);
-
-            // Add a delay before dealing damage
-            float damageDelay = 1; // Adjust this value based on your animation
-            yield return new WaitForSeconds(damageDelay);
-
             // Deal damage to the player
             playerHealthSystem.TakeDamage(phase0Attack1Damage, attackPoint.position);
         }
@@ -257,10 +258,61 @@ public class BossController : MonoBehaviour
     }
 
 
-    private void Phase2Attack1()
+    private IEnumerator Phase2Attack1()
     {
-        // Execute attack 1 for phase 2
+        Debug.Log("Starting Phase2Attack1");
+        animator.SetBool("IsWalking", false);
+
+        // Add the teleport out animation
+        animator.SetBool("IsTeleporting", true);
+        yield return new WaitForSeconds(1f); // Adjust the time to match the duration of your teleport out animation
+        animator.SetBool("IsTeleporting", false);
+
+        yield return new WaitForSeconds(0.5f); // Add a short delay between teleport out and teleport in animations
+
+        float currentY = transform.position.y;
+        float teleportOffsetX = 1.5f;
+        float teleportY = currentY;
+
+        // Determine which side of the player the boss should teleport to
+        float targetX = playerTransform.position.x - teleportOffsetX * Mathf.Sign(transform.localScale.x);
+        if (Mathf.Sign(targetX - playerTransform.position.x) == Mathf.Sign(transform.position.x - playerTransform.position.x))
+        {
+            targetX = playerTransform.position.x + teleportOffsetX * Mathf.Sign(transform.localScale.x);
+        }
+
+        Vector2 targetPosition = new Vector2(targetX, teleportY);
+        transform.position = targetPosition;
+
+        // Add the teleport in animation
+        animator.SetBool("IsTeleporting", true);
+        yield return new WaitForSeconds(1f); // Adjust the time to match the duration of your teleport in animation
+        animator.SetBool("IsTeleporting", false);
+
+        float delay = 1f;
+        yield return new WaitForSeconds(delay);
+
+        Debug.Log("Performing attack animation");
+        float distanceToPlayer = Vector2.Distance(attackPoint.position, playerTransform.position);
+
+        if (distanceToPlayer <= attack2Range)
+        {
+            animator.SetBool(IsAttacking, true);
+            animator.SetInteger(AttackType, 2);
+
+            float damageDelay = 1;
+            yield return new WaitForSeconds(damageDelay);
+
+            Debug.Log("Dealing damage");
+            playerHealthSystem.TakeDamage(phase0Attack2Damage, attackPoint.position);
+        }
+
+        animator.SetBool("IsWalking", true);
     }
+
+
+
+
 
     private void Phase2Attack2()
     {
