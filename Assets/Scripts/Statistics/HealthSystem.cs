@@ -9,7 +9,7 @@ public class HealthSystem : MonoBehaviour
 
     //Variable to save the current health value
     [SerializeField] public int currentHealth;
-    [SerializeField] private int maxHealth;
+    [SerializeField] public int maxHealth;
 
     //Unity-events for taking damage, healing and death
     public UnityEvent OnTakeDamage;
