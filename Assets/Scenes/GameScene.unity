@@ -315,6 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50972b9543a743243a8c79266227d616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bossHealthBarUI: {fileID: 1026042883}
 --- !u!61 &52133619
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -44296,7 +44297,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_LocalRotation: {x: -0.00443296, y: 0.000000020491338, z: 9.0838156e-11, w: 0.99999017}
+  m_LocalRotation: {x: -0.0044329595, y: 0.000000021029031, z: 9.322176e-11, w: 0.99999017}
   m_LocalPosition: {x: -9.000001, y: -193.37364, z: -22.968607}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -45254,7 +45255,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646096010}
-  m_LocalRotation: {x: -0.00443296, y: 0.000000020491338, z: 9.0838156e-11, w: 0.99999017}
+  m_LocalRotation: {x: -0.0044329595, y: 0.000000021029031, z: 9.322176e-11, w: 0.99999017}
   m_LocalPosition: {x: -9.000001, y: -193.37364, z: -22.968607}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

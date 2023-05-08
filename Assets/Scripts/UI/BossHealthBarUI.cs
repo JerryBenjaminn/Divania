@@ -12,10 +12,11 @@ public class BossHealthBarUI : MonoBehaviour
     private float maxHealth;
 
     private void Start()
-    {
+    {      
         maxHealth = bossStats.maxHealth;
         bossHealthBar.maxValue = maxHealth;
         bossHealthBar.value = maxHealth;
+        gameObject.SetActive(false);
     }
 
     private void Update()
@@ -32,6 +33,16 @@ public class BossHealthBarUI : MonoBehaviour
     public void SetBossName(string bossName)
     {
         bossNameText.text = bossName;
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }
 
