@@ -78,7 +78,7 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    public void PlayBossBattleMusic(float volume = 1f)
+    public void PlayBossBattleMusic(float volume = 0.1f)
     {
         if (bossBattleMusic != null)
         {
@@ -107,7 +107,7 @@ public class AudioManager : MonoBehaviour
     public void UpdateVolume(float sfxVolume, float bgMusicVolume)
     {
         // list of SFX names
-        List<string> sfxNames = new List<string> { "PlayerJump", "PlayerMiss", "BossHurt", "EnemyHurt", "Fireball", "PlayerHurt", "PlayerMeleeAttack", "PlayerStep", "GhoulExplode"};
+        List<string> sfxNames = new List<string> { "PlayerJump", "PlayerMiss", "BossHurt", "EnemyHurt", "Fireball", "PlayerHurt", "PlayerMeleeAttack", "PlayerStep", "GhoulExplode", "BossBattleMusic"};
 
         foreach (var sfxName in sfxNames)
         {

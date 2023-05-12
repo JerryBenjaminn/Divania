@@ -1661,6 +1661,10 @@ PrefabInstance:
       value: GhoulExplode
       objectReference: {fileID: 0}
     - target: {fileID: 4091670832114178989, guid: 1d6ad5a8e27095b4a94ec4f1a8ecf395, type: 3}
+      propertyPath: audioDataList.Array.data[1].volume
+      value: 0.028
+      objectReference: {fileID: 0}
+    - target: {fileID: 4091670832114178989, guid: 1d6ad5a8e27095b4a94ec4f1a8ecf395, type: 3}
       propertyPath: audioDataList.Array.data[10].volume
       value: 0.16
       objectReference: {fileID: 0}

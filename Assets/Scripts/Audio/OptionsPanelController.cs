@@ -29,6 +29,7 @@ public class OptionsPanelController : MonoBehaviour
     {
         AudioManager.instance.SetMusicVolume(volume);
         PlayerPrefs.SetFloat("bgMusicVolume", volume);
+
     }
 
     public void UpdateSoundSettings()
