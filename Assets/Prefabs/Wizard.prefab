@@ -97,10 +97,11 @@ MonoBehaviour:
   detectionRange: 5.06
   attackAnimationDuration: 2.2
   isWizard: 1
-  combustAttackRange: 1.98
+  combustAttackRange: 1.23
   combustCooldown: 4
   combustDamage: 15
   combustDamageInterval: 1
+  deathDuration: 0
 --- !u!114 &5199690553862606278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,13 +116,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterStats: {fileID: 11400000, guid: bd5c90b2a8585ce45b962e6d9ba486a8, type: 2}
   currentHealth: 0
+  maxHealth: 0
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls: []
   OnHeal:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDeath:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &4589615051347951593
@@ -145,7 +144,7 @@ MonoBehaviour:
   knockbackForce: 5
   knockbackDuration: 0.5
   knockbackAngle: 45
-  deathDuration: 0.2
+  deathDuration: 0
   isDying: 0
 --- !u!212 &2040652617547700327
 SpriteRenderer:

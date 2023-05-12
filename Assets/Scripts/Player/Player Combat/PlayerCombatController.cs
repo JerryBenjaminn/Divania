@@ -89,7 +89,10 @@ public class PlayerCombatController : MonoBehaviour
         //Enable hit detection
         weaponHitArea.EnableHitDetection();
 
-        AudioManager.instance.PlayAudioClip("PlayerMiss");
+        if (!UIManager.isMenuOpen)
+        {
+            AudioManager.instance.PlayAudioClip("PlayerMiss");
+        }
 
         // Start camera shake
         // cameraShake.Shake(shakeDuration, shakeMagnitude);
@@ -123,7 +126,10 @@ public class PlayerCombatController : MonoBehaviour
         //Enable hit detection
         weaponHitArea.EnableHitDetection();
 
-        AudioManager.instance.PlayAudioClip("PlayerMiss");
+        if (!UIManager.isMenuOpen)
+        {
+            AudioManager.instance.PlayAudioClip("PlayerMiss");
+        }
 
         // Start camera shake
         //cameraShake.Shake(shakeDuration, shakeMagnitude);

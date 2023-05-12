@@ -6,11 +6,11 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
 
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioSource backgroundMusicSource;
+    [SerializeField] public AudioSource audioSource;
+    [SerializeField] public AudioSource backgroundMusicSource;
     [SerializeField] private AudioClip bossBattleMusic;
 
-    [SerializeField] private List<AudioData> audioDataList;
+    [SerializeField] public List<AudioData> audioDataList;
 
     private void Awake()
     {
@@ -40,7 +40,15 @@ public class AudioManager : MonoBehaviour
         AudioData data = audioDataList.Find(x => x.name == clipName);
         if (data != null && data.clip != null)
         {
-            audioSource.PlayOneShot(data.clip, data.volume);
+            if (audioSource.clip != data.clip)
+            {
+                audioSource.clip = data.clip;
+            }
+            audioSource.volume = data.volume;
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
         }
         else
         {
@@ -52,16 +60,23 @@ public class AudioManager : MonoBehaviour
     {
         if (clip != null)
         {
-            backgroundMusicSource.clip = clip;
-            backgroundMusicSource.loop = true;
+            if (backgroundMusicSource.clip != clip || !backgroundMusicSource.isPlaying)
+            {
+                backgroundMusicSource.clip = clip;
+                backgroundMusicSource.loop = true;
+            }
             backgroundMusicSource.volume = volume;
-            backgroundMusicSource.Play();
+            if (!backgroundMusicSource.isPlaying)
+            {
+                backgroundMusicSource.Play();
+            }
         }
         else
         {
             Debug.LogWarning("Background music clip is null");
         }
     }
+
 
     public void PlayBossBattleMusic(float volume = 1f)
     {
@@ -78,6 +93,49 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("Boss battle music clip is null");
         }
     }
+
+    public void SetSFXVolume(float volume)
+    {
+        audioSource.volume = volume;
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        backgroundMusicSource.volume = volume;
+    }
+
+    public void UpdateVolume(float sfxVolume, float bgMusicVolume)
+    {
+        // list of SFX names
+        List<string> sfxNames = new List<string> { "PlayerJump", "PlayerMiss", "BossHurt", "EnemyHurt", "Fireball", "PlayerHurt", "PlayerMeleeAttack", "PlayerStep", "GhoulExplode"};
+
+        foreach (var sfxName in sfxNames)
+        {
+            AudioData sfxData = audioDataList.Find(x => x.name == sfxName);
+            if (sfxData != null)
+            {
+                sfxData.volume = sfxVolume;
+            }
+        }
+
+        AudioData bgMusicData = audioDataList.Find(x => x.name == "BackgroundMusic");
+        if (bgMusicData != null)
+        {
+            bgMusicData.volume = bgMusicVolume;
+        }
+    }
+
+    public float GetSFXVolume()
+    {
+        return audioSource.volume;
+    }
+
+    public float GetMusicVolume()
+    {
+        return backgroundMusicSource.volume;
+    }
+
+
 
 
 

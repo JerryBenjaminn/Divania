@@ -74,6 +74,7 @@ public class BurningGhoulController : MonoBehaviour
         yield return new WaitForSeconds(jumpWaitTime);
 
         // Destroy the ghoul
+        AudioManager.instance.PlayAudioClip("GhoulExplode");
         Destroy(gameObject);
 
         // Instantiate the explosion prefab
